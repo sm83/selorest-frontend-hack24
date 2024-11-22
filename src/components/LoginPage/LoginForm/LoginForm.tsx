@@ -105,11 +105,17 @@ const LoginForm = ({
       } else {
         const data = result.data as LoginSuccessResult;
 
+        console.log("dasd");
+        
+
         setStatus({
           success: true,
           pending: false,
           error: null,
         });
+
+        console.log("dfskajfbsdkb");
+        
 
         // fetching profile data
         dispatch(
@@ -124,7 +130,7 @@ const LoginForm = ({
 
         setIsAuth(true);
 
-        router.push('/app/home');
+        router.push('/app/accounts');
       }
     } catch (error) {
       setStatus({

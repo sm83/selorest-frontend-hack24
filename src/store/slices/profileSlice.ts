@@ -49,6 +49,9 @@ export const fetchProfileById = createAsyncThunk(
         throw requestUrl;
       }
 
+      console.log("fetch user data");
+      
+
       const response = await customFetch({
         url: requestUrl,
         expectedStatusCode: 200,
@@ -60,6 +63,9 @@ export const fetchProfileById = createAsyncThunk(
         authSensitiveSwitcher,
         unauthorizedAction,
       });
+
+      console.log("res ");
+      
 
       if (response instanceof Error) {
         throw response;

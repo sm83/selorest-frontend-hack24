@@ -128,7 +128,7 @@ const RegisterForm = ({
   
           setIsAuth(true);
   
-          router.push('/app/home');
+          router.push('/app/accounts');
         }
       } catch (error) {
         setStatus({
