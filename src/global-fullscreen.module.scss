@@ -1,0 +1,37 @@
+@use '@/variables.scss';
+
+.global-fullscreen-wrapper {
+  width: 100vw;
+  height: 100dvh;
+
+  display: grid;
+  grid-template-rows: var(--header-height) calc(
+      100dvh - var(--header-height)
+    );
+}
+
+.content-area {
+  height: 100%;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: auto 1fr;
+}
+
+.main-area {
+  width: 100%;
+  height: 100%;
+
+  overflow: auto;
+
+  &__content-itself {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    gap: 8px;
+
+    padding: 8px;
+  }
+}

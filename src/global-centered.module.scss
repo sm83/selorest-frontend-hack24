@@ -1,0 +1,58 @@
+@use '@/variables.scss';
+
+.global-centered-wrapper {
+  width: 100vw;
+  height: 100dvh;
+
+  display: grid;
+  grid-template-rows: var(--header-height) calc(
+      100dvh - var(--header-height)
+    );
+}
+
+.inner-wrapper {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  overflow: auto;
+}
+
+.center-wrapper {
+  width: 100%;
+  height: 100%;
+
+  &_widthmax-1250 {
+    max-width: 1250px;
+  }
+
+  &_layout-left-sidebar-30 {
+    display: grid;
+    grid-template-columns: 30% 1fr;
+  }
+
+  &_layout-right-sidebar-30 {
+    display: grid;
+    grid-template-columns: 1fr 30%;
+  }
+}
+
+.main-area {
+  width: 100%;
+  height: 100%;
+
+  &__content-itself {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+
+    gap: 8px;
+
+    padding: 8px;
+  }
+}

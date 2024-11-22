@@ -1,0 +1,19 @@
+.register-footer {
+  width: 100%;
+  height: var(--register-footer-height);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
+  .rights-span {
+    padding: 0 8px;
+
+    font-size: 0.9rem;
+    text-align: center;
+    color: var(--github-text-verytransparent);
+  }
+}
