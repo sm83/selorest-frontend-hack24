@@ -16,10 +16,27 @@
     height: 703px;
   }
 
+  &__logo {
+    font-family: "sceageus";
+    margin-bottom: 35.5px;
+    font-size: 40px;
+    line-height: 21px;
+    text-align: center;
+    color: var(--color-accent);
+    position: relative;
+  }
+
+  &__logo::after {
+    content: "p";
+    color: var(--color-expenses);
+    position: absolute;
+    left: 46.95px;
+  }
+
   &__description {
     text-align: center;
-    width: 285px;
-    margin-bottom: 75px;
+
+    margin-bottom: 30px;
     font-weight: 400;
     font-size: 20px;
     line-height: 25px;
