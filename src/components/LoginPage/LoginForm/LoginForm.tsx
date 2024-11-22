@@ -27,8 +27,8 @@ interface LoginValidateErrors {
 }
 
 interface LoginSuccessResult {
-  authToken: boolean;
   id: string;
+  token: string;
 }
 
 const loginValidationSchema = yup.object().shape({
@@ -92,7 +92,7 @@ const LoginForm = ({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: body,
-          credentials: 'include',
+          // credentials: 'include',
         },
       });
 
@@ -105,17 +105,16 @@ const LoginForm = ({
       } else {
         const data = result.data as LoginSuccessResult;
 
-        console.log("dasd");
+        console.log(data);
         
+
+        localStorage.setItem('token', data.token);
 
         setStatus({
           success: true,
           pending: false,
           error: null,
         });
-
-        console.log("dfskajfbsdkb");
-        
 
         // fetching profile data
         dispatch(

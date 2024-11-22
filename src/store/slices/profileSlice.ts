@@ -49,16 +49,16 @@ export const fetchProfileById = createAsyncThunk(
         throw requestUrl;
       }
 
-      console.log("fetch user data");
+      const token = localStorage.getItem('token');
       
-
       const response = await customFetch({
         url: requestUrl,
         expectedStatusCode: 200,
         options: {
           method: 'GET',
-          headers: { 'Content-Type': 'application/json' },
-          credentials: 'include',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          // credentials: 'include',
+
         },
         authSensitiveSwitcher,
         unauthorizedAction,

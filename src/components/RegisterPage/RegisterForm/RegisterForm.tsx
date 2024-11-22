@@ -29,7 +29,7 @@ interface RegisterValidateErrors {
 }
 
 interface RegisterSuccessResult {
-  authToken: boolean;
+  token: string;
   id: string;
 }
 
@@ -96,7 +96,7 @@ const RegisterForm = ({
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: body,
-            credentials: 'include',
+            // credentials: 'include',
           },
         });
   
@@ -108,6 +108,8 @@ const RegisterForm = ({
           });
         } else {
           const data = result.data as RegisterSuccessResult;
+
+          localStorage.setItem('token', data.token);
   
           setStatus({
             success: true,
