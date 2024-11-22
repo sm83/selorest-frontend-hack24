@@ -31,7 +31,8 @@ const LoginPage = () => {
   return (
     <div className="login-page-wrapper">
       <div className="login-page-inner-wrapper login-page-inner-wrapper_maxwidth-1250">
-        <LoginHeader />
+        {/* <LoginHeader /> */}
+        <div className=""></div>
         <div className="login-page-content">
           <div className="login-page-center-wrapper">
             <LoginForm

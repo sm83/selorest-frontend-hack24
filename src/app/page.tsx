@@ -1,14 +1,11 @@
 'use client';
 
-// import { useEffect } from 'react';
-import React from 'react'
+import { useEffect } from 'react';
 
 const RootPage = () => {
-  // useEffect(() => {
-  //   window.location.href = '/login';
-  // }, []);
-
-  // localStorage
+  useEffect(() => {
+    window.location.href = '/login';
+  }, []);
 
   return <></>;
 };

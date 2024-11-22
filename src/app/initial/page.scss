@@ -8,6 +8,14 @@
   align-items: center;
   flex-direction: column;
 
+  &__circle {
+    background: rgba(67, 61, 72, 0.6);
+    backdrop-filter: blur(174px);
+    position: absolute;
+    width: 495px;
+    height: 703px;
+  }
+
   &__description {
     text-align: center;
     width: 285px;

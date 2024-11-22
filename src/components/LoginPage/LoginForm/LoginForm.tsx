@@ -15,6 +15,7 @@ import { useRouter } from "next/navigation";
 import Spinner1 from "@/svgComponents/Spinner-1/Spinner-1";
 import SuccessIconAnimated from "@/svgComponents/SuccessIconAnimated/SuccessIconAnimated";
 import { ProcessStatus } from "@/interfaces/processStatus.interface";
+import Link from "next/link";
 
 interface LoginFormDto {
   email: string;
@@ -107,9 +108,8 @@ const LoginForm = ({
         const data = result.data as LoginSuccessResult;
 
         console.log(data);
-        
 
-        localStorage.setItem('token', data.token);
+        localStorage.setItem("token", data.token);
 
         setStatus({
           success: true,
@@ -172,7 +172,7 @@ const LoginForm = ({
   return (
     <>
       <div className="login-form">
-        <h2 className="login-form__header roboto-regular">Log In</h2>
+        <h2 className="login-form__header roboto-regular">Вход в систему</h2>
         <form
           className="login-form__form-itself"
           onSubmit={handleSubmit}
@@ -180,7 +180,7 @@ const LoginForm = ({
         >
           <RegularLoginInput
             name="email"
-            placeholder="Email"
+            placeholder="Логин"
             type="email"
             value={formValues.email}
             onChange={handleChange}
@@ -192,7 +192,7 @@ const LoginForm = ({
 
           <RegularLoginInput
             name="password"
-            placeholder="Password"
+            placeholder="Пароль"
             type="password"
             value={formValues.password}
             onChange={handleChange}
@@ -212,10 +212,13 @@ const LoginForm = ({
               {status.pending ? (
                 <Spinner1 color="white" size={18} />
               ) : (
-                "Sign In"
+                "Войти"
               )}
             </RegularButton>
           )}
+          <span className="login-form__span">
+            Ещё нет аккаунта? <Link href="/register">Создать аккаунт</Link>
+          </span>
         </form>
       </div>
     </>
