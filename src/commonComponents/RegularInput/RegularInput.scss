@@ -1,0 +1,59 @@
+.regular-input {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 20% 60%;
+
+  gap: 8px;
+
+  &__label {
+    position: relative;
+    right: 0;
+
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+
+    color: white;
+
+    transition: all 0.2s;
+
+    // &_transparent {
+    //   color: transparent;
+    // }
+  }
+
+  &__label_transparent {
+    color: transparent;
+    right: -10px;
+  }
+
+  &__label_visible {
+    color: white;
+    right: 0px;
+  }
+
+  &__input {
+    width: 100%;
+    height: 100%;
+
+    padding: 6px;
+
+    background-color: var(--github-selected-background);
+
+    border: 1px solid var(--github-border);
+    border-radius: 6px;
+
+    outline: none;
+
+    transition: all 0.2s;
+
+    &:focus {
+      border: 1px solid var(--github-selected-border);
+      box-shadow: 0 0 5px var(--github-selected-border);
+    }
+  }
+}

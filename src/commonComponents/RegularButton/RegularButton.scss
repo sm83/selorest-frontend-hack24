@@ -1,0 +1,76 @@
+.regular-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  padding: 8px;
+
+  cursor: pointer;
+
+  &_default {
+    background-color: var(--github-button-default-background);
+    border: 1px solid var(--github-button-default-border);
+    border-radius: 6px;
+
+    &:hover {
+      background-color: var(--github-button-default-background-hover);
+    }
+  }
+
+  &_success {
+    background-color: var(--github-success-background);
+    border: 1px solid var(--github-success-border);
+    border-radius: 6px;
+
+    &:hover {
+      background-color: var(--github-success-background-hover);
+    }
+  }
+
+  &_major-danger {
+    background-color: var(--github-button-default-background);
+    border: 1px solid var(--github-border);
+    border-radius: 6px;
+    color: var(--github-danger-text);
+
+    &:hover {
+      background-color: var(--github-danger-background-hover);
+      border: 1px solid var(--github-danger-button-border-hover);
+      color: white;
+    }
+  }
+
+  &_minor-danger {
+    background-color: var(--github-button-default-background);
+    border: 1px solid var(--github-border);
+    border-radius: 6px;
+    color: var(--github-danger-text);
+
+    &:hover {
+      background-color: var(--github-button-default-background-hover);
+    }
+  }
+
+  &_none {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 6px;
+
+    &:hover {
+      color: var(--github-text-grayhover);
+    }
+  }
+
+  &_outlined {
+    background-color: transparent;
+    border: 1px solid white;
+    border-radius: 6px;
+
+    &:hover {
+      color: var(--github-text-grayhover);
+      border: 1px solid var(--github-text-grayhover);
+    }
+  }
+}
