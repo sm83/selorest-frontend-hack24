@@ -7,11 +7,12 @@ type ColorVariant =
   | 'minor-danger'
   | 'major-danger'
   | 'none'
-  | 'outlined';
+  | 'outlined'
+  | 'in-use';
 
 interface RegularButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   colorVariant?: ColorVariant;
 }
 

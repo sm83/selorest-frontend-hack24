@@ -1,0 +1,84 @@
+.login-page-wrapper {
+  width: 100vw;
+  height: 100dvh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  /* Градиентный фон */
+  background: linear-gradient(
+    19deg,
+    rgba(17, 28, 60, 1) 0%,
+    rgba(9, 14, 31, 1) 41%,
+    rgba(14, 7, 24, 1) 62%,
+    hsl(273, 54%, 11%) 120%
+  );
+  background-size: 200% 200%;
+
+  /* Плавная анимация перемещения фона */
+  animation: rotate-gradient 60s linear infinite;
+}
+
+.login-page-inner-wrapper {
+  width: 100%;
+  height: 100%;
+
+  display: grid;
+  grid-template-rows:
+    var(--register-header-height)
+    calc(
+      100dvh - var(--register-header-height) - var(
+          --register-footer-height
+        )
+    )
+    var(--register-footer-height);
+
+  &_maxwidth-1250 {
+    max-width: 1250px;
+  }
+}
+
+.login-page-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-page-center-wrapper {
+  position: relative;
+
+  width: calc(100% - 32px);
+  max-width: 520px;
+}
+
+.error-span {
+  position: absolute;
+
+  display: block;
+  width: 100%;
+  text-align: center;
+
+  margin-top: 16px;
+
+  color: red;
+}
+
+.success-spinner-wrapper {
+  position: absolute;
+
+  width: 100%;
+
+  margin-top: 32px;
+  display: flex;
+  justify-content: center;
+
+  opacity: 0;
+
+  transition: opacity 0.2s;
+
+  &_visible {
+    opacity: 1;
+  }
+}

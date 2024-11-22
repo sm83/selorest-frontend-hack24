@@ -9,6 +9,8 @@
 
   cursor: pointer;
 
+  transition: all 0.2s;
+
   &_default {
     background-color: var(--github-button-default-background);
     border: 1px solid var(--github-button-default-border);
@@ -72,5 +74,13 @@
       color: var(--github-text-grayhover);
       border: 1px solid var(--github-text-grayhover);
     }
+  }
+
+  &_in-use {
+    background-color: var(--github-button-default-background);
+    border: 1px solid var(--github-button-default-border);
+    border-radius: 6px;
+    color: var(--github-text-secondary);
+    cursor: default;
   }
 }
