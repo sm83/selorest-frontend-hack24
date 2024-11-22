@@ -1,0 +1,14 @@
+@use '@/variables.scss';
+
+.fullscreen-sidebar {
+  height: 100%;
+  width: var(--sidebar-width);
+
+  background-color: var(--github-background-light);
+
+  border-right: 1px solid var(--github-border);
+
+  // @media only screen and (max-width: $breakpoint-tablet) {
+  //add css rules here
+  // }
+}

@@ -1,126 +1,199 @@
-'use client';
+"use client";
+
+import "./RegisterForm.scss";
 
 import RegularInput from '@/commonComponents/RegularInput/RegularInput';
-import './RegisterForm.scss';
-import { useState } from 'react';
+
+import { Dispatch, SetStateAction, useState } from 'react';
 import RegularButton from '@/commonComponents/RegularButton/RegularButton';
 import customFetch from '@/utils/customFetch';
 
-interface RegisterFormValues {
+import * as yup from 'yup';
+import { useAppDispatch, useAuth } from '@/hooks';
+import { fetchProfileById } from '@/store/slices';
+import { useRouter } from 'next/navigation';
+import Spinner1 from '@/svgComponents/Spinner-1/Spinner-1';
+import SuccessIconAnimated from '@/svgComponents/SuccessIconAnimated/SuccessIconAnimated';
+import { ProcessStatus } from '@/interfaces/processStatus.interface';
+
+interface RegisterFormDto {
   email: string;
   password: string;
   passwordAgain: string;
 }
 
-interface CreateUserDto {
-  email: string;
-  password: string;
+interface RegisterValidateErrors {
+  email: string[];
+  password: string[];
+  passwordAgain: string[];
 }
 
-const RegisterForm = () => {
-  const [formValues, setFormValues] = useState<RegisterFormValues>({
-    email: '',
-    password: '',
-    passwordAgain: '',
+interface RegisterSuccessResult {
+  authToken: boolean;
+  id: string;
+}
+
+const registerValidationSchema = yup.object().shape({
+  email: yup
+    .string()
+    .email('Неверный формат email')
+    .required('Email обязателен'),
+  password: yup.string().required('Пароль обязателен'),
+  passwordAgain: yup.string().required('Пароль обязателен'),
+});
+
+const RegisterForm = ({
+  status,
+  setStatus,
+}: {
+  status: ProcessStatus;
+  setStatus: Dispatch<SetStateAction<ProcessStatus>>;
+}) => {
+  const dispatch = useAppDispatch();
+  const { setIsAuth } = useAuth();
+  const router = useRouter();
+
+  const [formValues, setFormValues] = useState<RegisterFormDto>({
+    email: "",
+    password: "",
+    passwordAgain: "",
   });
 
-  const [errors, setErrors] = useState<
-    Partial<Record<keyof RegisterFormValues, string>>
-  >({});
+  const [validationErrors, setValidationErrors] =
+    useState<RegisterValidateErrors>({ email: [], password: [], passwordAgain: [] });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      [name]: value,
-    }));
-
-    // Убираем ошибку при изменении поля
-    if (errors[name as keyof RegisterFormValues]) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [name]: undefined,
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setFormValues((prevValues) => ({
+        ...prevValues,
+        [name]: value,
       }));
-    }
-  };
+  
+      // Убираем ошибку при изменении поля
+      setValidationErrors({ ...validationErrors, [name]: '' });
+    };
 
-  const validateForm = (): boolean => {
-    const { email, password, passwordAgain } = formValues;
-    const newErrors: Partial<
-      Record<keyof RegisterFormValues, string>
-    > = {};
-
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      newErrors.email = 'Invalid email format';
-    }
-
-    if (password !== passwordAgain) {
-      newErrors.passwordAgain = 'Passwords do not match';
-    }
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-
-    if (!validateForm()) {
-      return;
-    }
-
-    const { email, password } = formValues;
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/auth/register`;
-    const body: CreateUserDto = { email, password };
-
-    try {
-      const result = await customFetch({
-        url,
-        expectedStatusCode: 201,
-        options: {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: body,
-          credentials: 'include',
-        },
-      });
-
-      if (result instanceof Error) {
-        console.warn('Registration failed');
-      } else {
-        console.warn('Registration successful');
+    const handleSubmit = async (e: React.FormEvent) => {
+      e.preventDefault();
+  
+      setValidationErrors({ email: [], password: [], passwordAgain: [] });
+  
+      const { email, password } = formValues;
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`;
+      const body: { email: string, password: string } = { email, password };
+  
+      try {
+        setStatus({ success: false, pending: true, error: null });
+  
+        await registerValidationSchema.validate(formValues, {
+          abortEarly: false,
+        });
+  
+        const result = await customFetch({
+          url,
+          expectedStatusCode: 200,
+          options: {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: body,
+            credentials: 'include',
+          },
+        });
+  
+        if (result instanceof Error) {
+          setStatus({
+            success: false,
+            pending: false,
+            error: result.message,
+          });
+        } else {
+          const data = result.data as RegisterSuccessResult;
+  
+          setStatus({
+            success: true,
+            pending: false,
+            error: null,
+          });
+  
+          // fetching profile data
+          dispatch(
+            fetchProfileById({
+              id: data.id,
+              authSensitiveSwitcher: setIsAuth,
+              unauthorizedAction: () => {
+                router.push('/login');
+              },
+            })
+          );
+  
+          setIsAuth(true);
+  
+          router.push('/app/home');
+        }
+      } catch (error) {
+        setStatus({
+          success: false,
+          pending: false,
+          error: null,
+        });
+  
+        if (error instanceof yup.ValidationError) {
+          const errors: RegisterValidateErrors = {
+            email: [],
+            password: [],
+            passwordAgain: [],
+          };
+  
+          // Сортируем ошибки по полям
+          error.inner.forEach((err) => {
+            if (err.path === 'email') {
+              errors.email.push(err.message);
+            } else if (err.path === 'password') {
+              errors.password.push(err.message);
+            } else if (err.path === 'passwordAgain') {
+              errors.password.push(err.message);
+            }
+          });
+  
+          setValidationErrors(errors);
+        }
       }
-    } catch (error) {
-      console.error('Request error', error);
-    }
-  };
+    };
 
-  const renderError = (field: keyof RegisterFormValues) =>
-    errors[field] && (
-      <span className="error-message">{errors[field]}</span>
-    );
+  const renderError = (field: keyof RegisterValidateErrors) =>
+    Boolean(validationErrors[field].length) &&
+    validationErrors[field].map((errorItem) => {
+      return (
+        <span
+          className="error-message"
+          key={errorItem}
+        >
+          {errorItem}
+        </span>
+      );
+    });
 
   return (
     <div className="register-form">
-      <h2 className="register-form__header roboto-regular">
-        Registration
-      </h2>
+      <h2 className="register-form__header roboto-regular">Registration</h2>
       <form
         className="register-form__form-itself"
         onSubmit={handleSubmit}
         noValidate
       >
         <RegularInput
-          name="email"
-          placeholder="Email"
-          type="email"
-          value={formValues.email}
-          onChange={handleChange}
-          style={{
-            border: errors.email ? '1px solid red' : '',
-          }}
-        />
-        {renderError('email')}
+            name="email"
+            placeholder="Email"
+            type="email"
+            value={formValues.email}
+            onChange={handleChange}
+            style={{
+              border: validationErrors.email.length
+                ? '1px solid red'
+                : '',
+            }}
+          />
+        {renderError("email")}
 
         <RegularInput
           name="password"
@@ -137,17 +210,30 @@ const RegisterForm = () => {
           value={formValues.passwordAgain}
           onChange={handleChange}
           style={{
-            border: errors.passwordAgain ? '1px solid red' : '',
+            border: validationErrors.password.length
+              ? '1px solid red'
+              : '',
           }}
         />
-        {renderError('passwordAgain')}
+        {renderError("passwordAgain")}
 
-        <RegularButton
-          colorVariant="success"
-          type="submit"
-        >
-          Sign Up
-        </RegularButton>
+        {status.success ? (
+            <SuccessIconAnimated size={24} />
+          ) : (
+            <RegularButton
+              colorVariant={status.pending ? 'in-use' : 'success'}
+              type="submit"
+            >
+              {status.pending ? (
+                <Spinner1
+                  color="white"
+                  size={18}
+                />
+              ) : (
+                'Sign Up'
+              )}
+            </RegularButton>
+          )}
       </form>
     </div>
   );
