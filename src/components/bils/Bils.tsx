@@ -1,9 +1,7 @@
-import React, { FC, use, useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import card from "./assets/card.svg";
 import money from "./assets/money.svg";
-import wallet from "./assets/wallet.svg";
 import plus from "./assets/plus.svg";
-
 import "./Bils.scss";
 import Image from "next/image";
 
@@ -11,11 +9,11 @@ interface IBil {
   id: number;
   name: string;
   money: number;
-  icon: any;
+  icon: string;
 }
 
 interface BilsProps {
-  bils: IBil[];
+  bils?: IBil[];
   onAddClick: () => void;
 }
 
@@ -38,14 +36,14 @@ const Bils: FC<BilsProps> = ({ bils: propBils = [], onAddClick }) => {
   return (
     <div className="bils">
       <header className="bils__header">
-        <h1 className="bils__title bils__header_text">Cчета</h1>
+        <h1 className="bils__title bils__header_text">Счета</h1>
         <span className="bils__money bils__header_text">{sumBils} ₽</span>
       </header>
       <div className="bils__list">
         {bils.map((bil) => (
           <div className="bils__item" key={bil.id}>
             <div className="bils__item_icon">
-              <Image src={bil.icon} className="bils__item_svg" alt="" />
+              <Image src={bil.icon} className="bils__item_svg" alt={bil.name} />
             </div>
             <div className="bils__item_data">
               <div className="bils__item_name">{bil.name}</div>
@@ -60,5 +58,6 @@ const Bils: FC<BilsProps> = ({ bils: propBils = [], onAddClick }) => {
     </div>
   );
 };
+
 
 export default Bils;

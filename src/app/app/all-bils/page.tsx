@@ -9,18 +9,18 @@ import Image from "next/image";
 const AllBils = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const toggleModal = () => {
-    setIsModalOpen((prev) => !prev);
-  };
+  const toggleModal = () => setIsModalOpen((prev) => !prev);
+
   return (
     <div className="all-bils">
       <header className={`all-bils__header ${isModalOpen ? "blurred" : ""}`}>
         <button className="all-bils__header_btn">
-          <Image src={human} className="all-bils__header_svg" alt="" />
+          <Image src={human} className="all-bils__header_svg" alt="Пользователь" />
         </button>
         <h1 className="all-bils__title">Все счета</h1>
         <span className="all-bils__count">2 493 826 ₽ </span>
       </header>
+
       {isModalOpen && (
         <>
           <div className="all-bils__modal-overlay" onClick={toggleModal}></div>
@@ -57,7 +57,7 @@ const AllBils = () => {
                 type="text"
                 placeholder="Описание"
               />
-              <select className="all-bils__modal_input" name="" id="">
+              <select className="all-bils__modal_input" name="paymentType">
                 <option className="all-bils__modal_option" value="card">
                   Карта
                 </option>
@@ -69,9 +69,7 @@ const AllBils = () => {
             <h1 className="all-bils__modal_title pl-5">Баланс</h1>
             <div className="all-bils__modal_data-block">
               <div className="all-bils__modal_remainder all-bils__modal_input">
-                <span className="all-bils__modal_remainder-text">
-                  Остаток на счёте
-                </span>
+                <span className="all-bils__modal_remainder-text">Остаток на счёте</span>
                 <span className="all-bils__modal_remainder-count">0₽</span>
               </div>
               <div className="all-bils__modal_input all-bils__modal_balance">
