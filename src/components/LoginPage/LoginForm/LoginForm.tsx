@@ -129,7 +129,7 @@ const LoginForm = ({
 
         setIsAuth(true);
 
-        router.push('/app/accounts');
+        router.push('/app/categories');
       }
     } catch (error) {
       setStatus({

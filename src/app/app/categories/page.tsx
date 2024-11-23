@@ -29,7 +29,7 @@ const Categories = () => {
   // };
 
   return (
-    <div className="home-page-wrapper">
+    <div className="categories-page-wrapper">
       <CategoriesPage />
     </div>
   );
