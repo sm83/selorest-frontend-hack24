@@ -27,7 +27,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import ModalForm from "./modalForm/ModalForm";
-import CategoryModal from "./categoryModal/CategoryModal";
+// import CategoryModal from "./categoryModal/CategoryModal";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 

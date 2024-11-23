@@ -84,7 +84,7 @@ const RegisterForm = ({
     setValidationErrors({ email: [], password: [], passwordAgain: [] });
 
     const { email, password } = formValues;
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/auth/register`;
     const body: { email: string; password: string } = { email, password };
 
     try {
@@ -135,7 +135,7 @@ const RegisterForm = ({
 
         setIsAuth(true);
 
-        router.push("/app/accounts");
+        router.push("/app/categories");
       }
     } catch (error) {
       setStatus({

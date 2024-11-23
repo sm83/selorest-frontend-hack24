@@ -15,6 +15,7 @@ interface ModalFormProps {
   } | null;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const CategoryModal: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
   const [isVisible, setIsVisible] = useState(false);
 
