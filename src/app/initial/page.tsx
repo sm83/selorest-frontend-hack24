@@ -13,8 +13,8 @@ const Initial = () => {
       {/* <div className="initial__circle"></div> */}
       <h1 className="initial__logo">kopeyka</h1>
       <p className="initial__description">
-        Ведите учет финансов, <br /> накапливайте на цели, планируйте <br /> траты и получайте
-        аналитику
+        Ведите учет финансов, <br /> накапливайте на цели, планируйте <br />{" "}
+        траты и получайте аналитику
       </p>
       <button
         onClick={() => router.push("/register")}

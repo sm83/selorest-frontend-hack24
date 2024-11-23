@@ -179,7 +179,7 @@ const RegisterForm = ({
 
   return (
     <div className="register-form">
-      <h2 className="register-form__header roboto-regular">Регистрация</h2>
+      <h2 className="register-form__header">Регистрация</h2>
       <form
         className="register-form__form-itself"
         onSubmit={handleSubmit}
