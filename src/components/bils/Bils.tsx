@@ -1,46 +1,39 @@
 import React, { FC, use, useEffect, useState } from "react";
+import card from "./assets/card.svg";
+import money from "./assets/money.svg";
+import wallet from "./assets/wallet.svg";
+import plus from "./assets/plus.svg";
 
 import "./Bils.scss";
+import Image from "next/image";
 
 interface IBil {
   id: number;
   name: string;
   money: number;
-  icon: string;
-}
-
-interface ISaving {
-  id: number;
-  name: string;
-  money: number;
-  icon: string;
+  icon: any;
 }
 
 interface BilsProps {
   bils: IBil[];
-  saving: ISaving[];
+  onAddClick: () => void;
 }
 
-const Bils: FC<BilsProps> = ({ bils: propBils, saving: propSaving }) => {
+const Bils: FC<BilsProps> = ({ bils: propBils = [], onAddClick }) => {
   const [sumBils, setSumBils] = useState(0);
-  const [sumSaving, setSumSaving] = useState(0);
   const [bils, setBils] = useState<IBil[]>(
-    [
-      { id: "0", name: "Карта", money: 2493826, icon: "public/svg/card.svg" },
-      { id: "1", name: "Наличные", money: 0, icon: "public/svg/money.svg" },
-    ]
-    // propBils
+    propBils.length > 0
+      ? propBils
+      : [
+          { id: 0, name: "Карта", money: 2493826, icon: card },
+          { id: 1, name: "Наличные", money: 0, icon: money },
+        ]
   );
-  const [saving, setSaving] = useState<ISaving[]>(propSaving);
-
-  function calculateSumBils() {
-    const total = bils.reduce((acc, item) => acc + item.money, 0);
-    setSumBils(total);
-  }
 
   useEffect(() => {
-    calculateSumBils();
-  });
+    const total = bils.reduce((acc, item) => acc + item.money, 0);
+    setSumBils(total);
+  }, [bils]);
 
   return (
     <div className="bils">
@@ -52,7 +45,7 @@ const Bils: FC<BilsProps> = ({ bils: propBils, saving: propSaving }) => {
         {bils.map((bil) => (
           <div className="bils__item" key={bil.id}>
             <div className="bils__item_icon">
-              <img src="public/svg/card.svg" className="bils__item_svg"></img>
+              <Image src={bil.icon} className="bils__item_svg" alt="" />
             </div>
             <div className="bils__item_data">
               <div className="bils__item_name">{bil.name}</div>
@@ -60,34 +53,9 @@ const Bils: FC<BilsProps> = ({ bils: propBils, saving: propSaving }) => {
             </div>
           </div>
         ))}
-
-        {/* <div className="bils__item">
-          <div className="bils__item_icon">
-            <img src="public/svg/card.svg" className="bils__item_svg"></img>
-          </div>
-          <div className="bils__item_data">
-            <div className="bils__item_name">Наличные</div>
-            <div className="bils__item_money">0 ₽</div>
-          </div>
-        </div> */}
       </div>
-      <header className="bils__header">
-        <h1 className="bils__title bils__header_text">Сбережения</h1>
-        <span className="bils__money bils__header_text">0 ₽</span>
-      </header>
-      <div className="bils__list">
-        <div className="bils__item">
-          <div className="bils__item_icon">
-            <img src="public/svg/card.svg" className="bils__item_svg"></img>
-          </div>
-          <div className="bils__item_data">
-            <div className="bils__item_name">Наличные</div>
-            <div className="bils__item_money">0 ₽</div>
-          </div>
-        </div>
-      </div>
-      <button className="bils__btn_add">
-        <img src="public/svg/card.svg" className="bils__btn_svg"></img>
+      <button onClick={onAddClick} className="bils__btn_add">
+        <Image src={plus} className="bils__btn_svg" alt="Добавить" />
       </button>
     </div>
   );
