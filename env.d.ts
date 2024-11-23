@@ -8,7 +8,7 @@ namespace NodeJS {
     APP_CATEGORIES: string;
     APP_ACCOUNTS: string;
     APP_TRANSACTIONS: string;
-    APP_BUDGETS: string;
+    APP_ANALIS: string;
     APP_REVIEWS: string;
   }
 }

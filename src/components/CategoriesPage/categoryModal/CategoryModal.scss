@@ -1,0 +1,130 @@
+.CategoryModal {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+
+    .CategoryModalContent {
+        position: relative;
+        width: 100%;
+        height: 70%; // Высота модального окна
+        background: #1c1c1e;
+        border-radius: 20px 20px 0 0;
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        overflow-y: auto;
+        z-index: 10;
+
+        transform: translateY(100%);
+        transition: transform 0.3s ease-out;
+
+        &.visible {
+            transform: translateY(0); // Поднимается на место
+        }
+
+
+        .CategoryModalHeader {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 20px;
+
+
+            button {
+                color: #2D9CDB;
+                background-color: transparent !important;
+                border: none;
+            }
+        }
+
+        .CategoryModalBody {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+            width: 100%;
+
+            .img {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 67px;
+                height: 67px;
+                background-color: #ED8C8C;
+                border-radius: 999px;
+            }
+
+            .Podcategorii {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+                width: 100%;
+
+                button {
+                    background-color: #131313;
+                    border: none;
+                }
+            }
+
+            .InputWrapper {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                width: 100%;
+
+                input {
+                    background-color: #131313;
+                    width: 100%;
+                    padding: 10px;
+                    border-radius: 10px;
+                    border: none;
+                    outline: none;
+                }
+
+            }
+
+        }
+
+        .CategoryModalFooter {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            gap: 5px;
+
+            button {
+                background-color: #131313;
+                border: none;
+            }
+        }
+
+    }
+
+
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 30%; // Замыливание 30% контента
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+    }
+
+
+}
+
+.color {
+    background-color: #131313 !important;
+}
+
+.remove {
+    color: #EB5757 !important;
+}

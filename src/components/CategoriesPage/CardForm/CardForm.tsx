@@ -21,7 +21,7 @@ const CardForm = ({
   return (
     <div className={`CardForm ${className}`} onClick={onClick}>
       <h3>{title}</h3>
-      <Image src={image} alt={title} />
+      <Image src={image} alt={title} height={48} width={48} />
       <span>{mony}₽</span>
     </div>
   );

@@ -55,7 +55,7 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
     if (typeof value === "number") {
       setInputValue((prev) => `${prev}${value}`);
     } else if (value === "clear") {
-      setInputValue((prev) => prev.slice(0, -1));
+      setInputValue((prev) => prev.slice(0, -1) || "0");
     } else if (value === "complete") {
       console.log("Ввод завершен:", inputValue);
       setInputValue("");
@@ -78,7 +78,7 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
           <div className="cart" style={{ backgroundColor: "#EDD100" }}>
             <div>
               <span>На категорию</span>
-              <h1>{selectedCard?.title}</h1>
+              <h1>{selectedCard?.title || "Категория"}</h1>
             </div>
             <Image src={people} alt="Family" />
           </div>
@@ -86,14 +86,14 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
         <div className="item11 item">{inputValue || "0"}</div>
         {buttonData.map((button) => (
           <RegularButton
-            key={button.el}
+            key={`button-${button.el}`}
             value={button.value}
             onClick={() => handleButtonClick(button.value)}
             className={`item${button.el} item`}
             style={{
               backgroundColor:
                 typeof button.value === "number" ? "#131313" : "transparent",
-              border: "none"
+              border: "none",
             }}
           >
             {typeof button.value === "number" ? (
@@ -101,7 +101,7 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
             ) : (
               <Image
                 src={button.value === "clear" ? clear : complete}
-                alt={button.value}
+                alt={button.value.toString()}
               />
             )}
           </RegularButton>
