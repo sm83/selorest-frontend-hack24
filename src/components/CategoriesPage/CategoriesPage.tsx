@@ -18,6 +18,8 @@ import dohodIcon from "./assets/DohodIcon.svg";
 import dohod from "./assets/Dohod.svg";
 import rashod from "./assets/Rashod.svg";
 
+import plus from "./assets/newPlus.svg";
+
 import CardForm from "./CardForm/CardForm";
 import RegularButton from "@/commonComponents/RegularButton/RegularButton";
 import Image from "next/image";
@@ -25,6 +27,7 @@ import Image from "next/image";
 import { useState } from "react";
 
 import ModalForm from "./modalForm/ModalForm";
+import CategoryModal from "./categoryModal/CategoryModal";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -47,7 +50,7 @@ const expenseData: ExpenseDataItem[] = [
 ];
 
 const incomeData: ExpenseDataItem[] = [
-  { title: "Зарплата", image: dohodIcon, el: 2, mony: 1000 },
+  { title: "Зарплата", image: dohodIcon, el: 1, mony: 1000 },
 ];
 
 const CategoriesPage = () => {
@@ -91,6 +94,8 @@ const CategoriesPage = () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     beforeDraw: (chart: any) => {
       const { width, height, ctx } = chart;
+      if (!ctx) return; // Добавлена проверка
+
       ctx.save();
       ctx.font = "bold 16px Arial";
       ctx.textAlign = "center";
@@ -119,26 +124,46 @@ const CategoriesPage = () => {
         "#EDD103",
         "#4FCAE8",
       ]
-    : ["#DEDEDE"];
+    : ["#DEDEDE", "#B0B0B0"]; // Добавлен массив цветов для доходов
 
   return (
     <div className="CategoriesPage">
-      <div className={`CategoriesBody ${!isExpense && "dohod"}`}>
-        {currentData.map((item) => (
-          <CardForm
-            key={item.el}
-            title={item.title}
-            image={item.image}
-            className={`item${item.el}`}
-            mony={item.mony}
-            onClick={() => openModal(item)}
-          />
-        ))}
-        <div className="CategoriesChart item10">
-          <Pie
-            data={createChartData(currentData, chartColors)}
-            plugins={[centerTextPlugin]}
-          />
+      <div className="CategoriesBody">
+        <div className="MainCategories">
+          <div className="CategoriesChart">
+            <Pie
+              data={createChartData(currentData, chartColors)}
+              plugins={[centerTextPlugin]}
+            />
+          </div>
+          <div className="Categories">
+            <div>
+              <span className="name">План</span>
+              <span>Сумма</span>
+            </div>
+            <div>
+              <span className="name">Цель</span>
+              <span>Сумма</span>
+            </div>
+          </div>
+        </div>
+        <div className="UserCategories">
+          {currentData.map((category) => (
+            <CardForm
+              className="UserCategoryItem"
+              key={category.el}
+              onClick={() => openModal(category)}
+              title={category.title}
+              image={category.image}
+              mony={category.mony}
+            />
+          ))}
+          <div
+            className="UserCategoryItem addButton"
+            onClick={() => setIsModalOpen(true)} // Обработчик обновлен
+          >
+            <Image src={plus} alt="Добавить категорию" height={48} width={48} />
+          </div>
         </div>
       </div>
 
@@ -167,6 +192,7 @@ const CategoriesPage = () => {
 
       {isModalOpen && (
         <ModalForm onClose={closeModal} selectedCard={selectedCard || null} />
+        // <CategoryModal onClose={closeModal} selectedCard={selectedCard || null} />
       )}
     </div>
   );

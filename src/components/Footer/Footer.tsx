@@ -31,8 +31,8 @@ export const buttons: Array<{ image: any; text: string; url: string }> = [
   },
   {
     image: server,
-    text: "Бюджет",
-    url: AppUrlConfig.APP_BUDGETS,
+    text: "Анализ",
+    url: AppUrlConfig.APP_ANALIS,
   },
   {
     image: bar,
