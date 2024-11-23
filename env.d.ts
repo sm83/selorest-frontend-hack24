@@ -5,5 +5,10 @@ namespace NodeJS {
     SITE_NAME: string;
     APP_URL: string;
     SITE_DESCRIPTION: string;
+    APP_CATEGORIES: string;
+    APP_ACCOUNTS: string;
+    APP_TRANSACTIONS: string;
+    APP_BUDGETS: string;
+    APP_REVIEWS: string;
   }
 }

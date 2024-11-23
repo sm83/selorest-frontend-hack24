@@ -1,6 +1,6 @@
 import MainHeader from '@/components/MainHeader/MainHeader';
 import './layout.scss';
-import MainFooter from '@/components/MainFooter/MainFooter';
+import Footer from '@/components/Footer/Footer';
 
 export default function AppLayout({
   children,
@@ -9,7 +9,7 @@ export default function AppLayout({
     <div className="app-wrapper">
       <MainHeader />
       {children}
-      <MainFooter />
+      <Footer />
     </div>
   );
 }
