@@ -1,15 +1,15 @@
-import MainHeader from '@/components/MainHeader/MainHeader';
 import './layout.scss';
-import MainFooter from '@/components/MainFooter/MainFooter';
+import Footer from '@/components/Footer/Footer';
+import Header from '@/components/header/Header';
 
 export default function AppLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className="app-wrapper">
-      <MainHeader />
+      <Header />
       {children}
-      <MainFooter />
+      <Footer />
     </div>
   );
 }

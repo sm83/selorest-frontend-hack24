@@ -1,16 +1,15 @@
-'use client';
+"use client";
 
-import './page.scss';
-import RegisterHeader from '@/components/RegisterPage/RegisterHeader/RegisterHeader';
-import SimpleTermsFooter from '@/components/SimpleTermsFooter/SimpleTermsFooter';
-import { useEffect, useState } from 'react';
-import { ProcessStatus } from '@/interfaces/processStatus.interface';
-import Spinner1 from '@/svgComponents/Spinner-1/Spinner-1';
-import clsx from 'clsx';
-import RegisterForm from '@/components/RegisterPage/RegisterForm/RegisterForm';
+import "./page.scss";
+import RegisterHeader from "@/components/RegisterPage/RegisterHeader/RegisterHeader";
+import SimpleTermsFooter from "@/components/SimpleTermsFooter/SimpleTermsFooter";
+import { useEffect, useState } from "react";
+import { ProcessStatus } from "@/interfaces/processStatus.interface";
+import Spinner1 from "@/svgComponents/Spinner-1/Spinner-1";
+import clsx from "clsx";
+import RegisterForm from "@/components/RegisterPage/RegisterForm/RegisterForm";
 
 const RegisterPage = () => {
-
   const [status, setStatus] = useState<ProcessStatus>({
     success: false,
     pending: false,
@@ -34,18 +33,13 @@ const RegisterPage = () => {
         <RegisterHeader />
         <div className="register-page-content">
           <div className="register-page-center-wrapper">
-            <RegisterForm
-              setStatus={setStatus}
-              status={status}
-            />
-            {status.error && (
-              <span className="error-span">{status.error}</span>
-            )}
+            <RegisterForm setStatus={setStatus} status={status} />
+            {status.error && <span className="error-span">{status.error}</span>}
             {status.success && (
               <div
                 className={clsx(
-                  'success-spinner-wrapper',
-                  showLoader && 'success-spinner-wrapper_visible'
+                  "success-spinner-wrapper",
+                  showLoader && "success-spinner-wrapper_visible"
                 )}
               >
                 <Spinner1

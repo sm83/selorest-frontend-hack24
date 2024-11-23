@@ -1,20 +1,21 @@
-'use client';
+"use client";
 
-import './LoginForm.scss';
+import "./LoginForm.scss";
 
-import RegularLoginInput from '@/commonComponents/RegularInput/RegularInput';
+import RegularLoginInput from "@/commonComponents/RegularInput/RegularInput";
 
-import { Dispatch, SetStateAction, useState } from 'react';
-import RegularButton from '@/commonComponents/RegularButton/RegularButton';
-import customFetch from '@/utils/customFetch';
+import { Dispatch, SetStateAction, useState } from "react";
+import RegularButton from "@/commonComponents/RegularButton/RegularButton";
+import customFetch from "@/utils/customFetch";
 
-import * as yup from 'yup';
-import { useAppDispatch, useAuth } from '@/hooks';
-import { fetchProfileById } from '@/store/slices';
-import { useRouter } from 'next/navigation';
-import Spinner1 from '@/svgComponents/Spinner-1/Spinner-1';
-import SuccessIconAnimated from '@/svgComponents/SuccessIconAnimated/SuccessIconAnimated';
-import { ProcessStatus } from '@/interfaces/processStatus.interface';
+import * as yup from "yup";
+import { useAppDispatch, useAuth } from "@/hooks";
+import { fetchProfileById } from "@/store/slices";
+import { useRouter } from "next/navigation";
+import Spinner1 from "@/svgComponents/Spinner-1/Spinner-1";
+import SuccessIconAnimated from "@/svgComponents/SuccessIconAnimated/SuccessIconAnimated";
+import { ProcessStatus } from "@/interfaces/processStatus.interface";
+import Link from "next/link";
 
 interface LoginFormDto {
   email: string;
@@ -34,9 +35,9 @@ interface LoginSuccessResult {
 const loginValidationSchema = yup.object().shape({
   email: yup
     .string()
-    .email('Неверный формат email')
-    .required('Email обязателен'),
-  password: yup.string().required('Пароль обязателен'),
+    .email("Неверный формат email")
+    .required("Email обязателен"),
+  password: yup.string().required("Пароль обязателен"),
 });
 
 const LoginForm = ({
@@ -51,12 +52,13 @@ const LoginForm = ({
   const router = useRouter();
 
   const [formValues, setFormValues] = useState<LoginFormDto>({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
-  const [validationErrors, setValidationErrors] =
-    useState<LoginValidateErrors>({ email: [], password: [] });
+  const [validationErrors, setValidationErrors] = useState<LoginValidateErrors>(
+    { email: [], password: [] }
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -66,7 +68,7 @@ const LoginForm = ({
     }));
 
     // Убираем ошибку при изменении поля
-    setValidationErrors({ ...validationErrors, [name]: '' });
+    setValidationErrors({ ...validationErrors, [name]: "" });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -89,8 +91,8 @@ const LoginForm = ({
         url,
         expectedStatusCode: 200,
         options: {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: body,
           // credentials: 'include',
         },
@@ -106,9 +108,8 @@ const LoginForm = ({
         const data = result.data as LoginSuccessResult;
 
         console.log(data);
-        
 
-        localStorage.setItem('token', data.token);
+        localStorage.setItem("token", data.token);
 
         setStatus({
           success: true,
@@ -122,14 +123,14 @@ const LoginForm = ({
             id: data.id,
             authSensitiveSwitcher: setIsAuth,
             unauthorizedAction: () => {
-              router.push('/login');
+              router.push("/login");
             },
           })
         );
 
         setIsAuth(true);
 
-        router.push('/app/accounts');
+        router.push('/app/categories');
       }
     } catch (error) {
       setStatus({
@@ -146,9 +147,9 @@ const LoginForm = ({
 
         // Сортируем ошибки по полям
         error.inner.forEach((err) => {
-          if (err.path === 'email') {
+          if (err.path === "email") {
             errors.email.push(err.message);
-          } else if (err.path === 'password') {
+          } else if (err.path === "password") {
             errors.password.push(err.message);
           }
         });
@@ -162,10 +163,7 @@ const LoginForm = ({
     Boolean(validationErrors[field].length) &&
     validationErrors[field].map((errorItem) => {
       return (
-        <span
-          className="error-message"
-          key={errorItem}
-        >
+        <span className="error-message" key={errorItem}>
           {errorItem}
         </span>
       );
@@ -174,7 +172,7 @@ const LoginForm = ({
   return (
     <>
       <div className="login-form">
-        <h2 className="login-form__header roboto-regular">Log In</h2>
+        <h2 className="login-form__header roboto-regular">Вход в систему</h2>
         <form
           className="login-form__form-itself"
           onSubmit={handleSubmit}
@@ -182,49 +180,45 @@ const LoginForm = ({
         >
           <RegularLoginInput
             name="email"
-            placeholder="Email"
+            placeholder="Логин"
             type="email"
             value={formValues.email}
             onChange={handleChange}
             style={{
-              border: validationErrors.email.length
-                ? '1px solid red'
-                : '',
+              border: validationErrors.email.length ? "1px solid red" : "",
             }}
           />
-          {renderError('email')}
+          {renderError("email")}
 
           <RegularLoginInput
             name="password"
-            placeholder="Password"
+            placeholder="Пароль"
             type="password"
             value={formValues.password}
             onChange={handleChange}
             style={{
-              border: validationErrors.password.length
-                ? '1px solid red'
-                : '',
+              border: validationErrors.password.length ? "1px solid red" : "",
             }}
           />
-          {renderError('password')}
+          {renderError("password")}
 
           {status.success ? (
             <SuccessIconAnimated size={24} />
           ) : (
             <RegularButton
-              colorVariant={status.pending ? 'in-use' : 'success'}
+              colorVariant={status.pending ? "in-use" : "success"}
               type="submit"
             >
               {status.pending ? (
-                <Spinner1
-                  color="white"
-                  size={18}
-                />
+                <Spinner1 color="white" size={18} />
               ) : (
-                'Sign In'
+                "Войти"
               )}
             </RegularButton>
           )}
+          <span className="login-form__span">
+            Ещё нет аккаунта? <Link href="/register">Создать аккаунт</Link>
+          </span>
         </form>
       </div>
     </>

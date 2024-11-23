@@ -12,8 +12,11 @@
   .rights-span {
     padding: 0 8px;
 
-    font-size: 0.9rem;
+    font-weight: 400;
+    line-height: 21px;
+    font-size: 10px;
+
     text-align: center;
-    color: var(--github-text-verytransparent);
+    color: var(--color-grey);
   }
 }

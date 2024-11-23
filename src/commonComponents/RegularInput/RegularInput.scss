@@ -1,53 +1,25 @@
 .regular-input {
   width: 100%;
-  display: grid;
-  grid-template-columns: 20% 60%;
+  display: flex;
+  justify-content: center;
 
   gap: 8px;
 
-  &__label {
-    position: relative;
-    right: 0;
-
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
-
-    color: white;
-
-    transition: all 0.2s;
-
-    // &_transparent {
-    //   color: transparent;
-    // }
-  }
-
-  &__label_transparent {
-    color: transparent;
-    right: -10px;
-  }
-
-  &__label_visible {
-    color: white;
-    right: 0px;
-  }
-
   &__input {
-    width: 100%;
-    height: 100%;
+    width: 327px;
+    height: 48px;
 
-    padding: 6px;
+    color: var(--color-grey);
+    font-size: 16px;
+    line-height: 31px;
+    font-weight: 400;
 
-    background-color: var(--github-selected-background);
+    padding: 0 20px;
+    background-color: var(--color-dark-grey);
 
-    border: 1px solid var(--github-border);
-    border-radius: 6px;
-
+    border: none;
     outline: none;
+    border-radius: 20px;
 
     transition: all 0.2s;
 
@@ -55,5 +27,12 @@
       border: 1px solid var(--github-selected-border);
       box-shadow: 0 0 5px var(--github-selected-border);
     }
+  }
+
+  &__input::placeholder {
+    color: var(--color-grey);
+    font-size: 16px;
+    line-height: 31px;
+    font-weight: 400;
   }
 }
