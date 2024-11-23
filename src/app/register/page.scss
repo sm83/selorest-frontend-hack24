@@ -6,18 +6,8 @@
   justify-content: center;
   align-items: center;
 
-  /* Градиентный фон */
-  background: linear-gradient(
-    19deg,
-    rgba(17, 28, 60, 1) 0%,
-    rgba(9, 14, 31, 1) 41%,
-    rgba(14, 7, 24, 1) 62%,
-    hsl(273, 54%, 11%) 120%
-  );
-  background-size: 200% 200%;
+  background: var(--color-black);
 
-  /* Плавная анимация перемещения фона */
-  animation: rotate-gradient 60s linear infinite;
 }
 
 .register-page-inner-wrapper {

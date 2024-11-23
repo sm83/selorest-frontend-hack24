@@ -1,4 +1,4 @@
-@use '/public/fonts/fonts.scss';
+@use "/public/fonts/fonts.scss";
 
 :root {
   color-scheme: dark;
@@ -23,6 +23,14 @@
   --color-header-main: hsl(0, 0%, 97%);
   --color-header-border: hsl(0, 0%, 93%);
   --color-header-shadow: hsla(0, 0%, 80%, 0.5);
+
+  --color-grey2: rgba(79, 79, 79, 1);
+  --color-accent: rgba(45, 156, 219, 1);
+  --color-expenses: rgba(211, 77, 133, 1);
+  --color-black: rgba(19, 19, 19, 1);
+  --color-dark-grey: rgba(28, 28, 30, 1);
+  --color-grey: rgba(222, 222, 222, 1);
+  --color-white: rgba(255, 255, 255, 1);
 
   --blue-almostBlack: #091633;
   --blue-dark: #1b449a;
@@ -91,38 +99,38 @@
 
 /* fonts */
 .roboto-thin {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: 100;
 }
 
 .roboto-light {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: 300;
 }
 
 .roboto-regular {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: 400;
 }
 
 .roboto-regular-italic {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: 400;
   font-style: italic;
 }
 
 .roboto-medium {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: 500;
 }
 
 .roboto-bold {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: 700;
 }
 
 .roboto-black {
-  font-family: 'Roboto';
+  font-family: "Roboto";
   font-weight: 900;
 }
 
@@ -168,7 +176,7 @@ body {
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'Roboto';
+  font-family: "Roboto";
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -179,6 +187,7 @@ body {
   padding: 0;
   margin: 0;
   font-weight: normal;
+  font-family: "TinkoffSans-Regular";
 
   color: #f0f6fc;
 }
@@ -238,7 +247,7 @@ blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: '';
+  content: "";
   content: none;
 }
 table {
