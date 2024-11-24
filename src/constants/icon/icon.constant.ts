@@ -12,7 +12,8 @@ export interface IconData {
   id: number;
   name: string;
   color: string;
-  svg: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  svg: any;
 }
 
 export const icons: IconData[] = [
