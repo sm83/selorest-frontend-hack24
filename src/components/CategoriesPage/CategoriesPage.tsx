@@ -31,7 +31,7 @@ interface ExpenseDataItem {
   balance: number;
   deleted: boolean;
   currency: number;
-  icon: number;
+  icon: number | null;
   userId: string;
   createdAt: string;
   updatedAt: string;
@@ -183,9 +183,13 @@ const CategoriesPage = () => {
                   className="UserCategoryItem"
                   key={category.id}
                   onClick={() => openModal(category)}
-                  selectedCard={category}
+                  selectedCard={{
+                    ...category,
+                    icon: category.icon ?? 0, // Устанавливаем значение по умолчанию
+                  }}
                 />
               ))}
+
             <div
               className="UserCategoryItem addButton"
               onClick={() => setIsModalOpen(true)}
