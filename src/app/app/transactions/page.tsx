@@ -4,6 +4,70 @@ import React, { FC, useState } from "react";
 import "./page.scss";
 import Image from "next/image";
 
+export interface IconData {
+  id: number;
+  name: string;
+  color: string;
+  svg: string;
+}
+
+const icons: IconData[] = [
+  {
+    id: 0,
+    name: "Подарки",
+    color: "--color-pink",
+    svg: "./assets/gift.svg",
+  },
+  {
+    id: 1,
+    name: "Транспорт",
+    color: "--color-transport",
+    svg: "./assets/transport",
+  },
+  {
+    id: 2,
+    name: "Продукты",
+    color: "--color-receipt",
+    svg: "./assets/receipt.svg",
+  },
+  {
+    id: 3,
+    name: "Семья",
+    color: "--color-family",
+    svg: "./assets/family.svg",
+  },
+  {
+    id: 4,
+    name: "Здоровье",
+    color: "--color-heart",
+    svg: "./assets/heart.svg",
+  },
+  {
+    id: 5,
+    name: "Кафе",
+    color: "--color-food",
+    svg: "./assets/food.svg",
+  },
+  {
+    id: 6,
+    name: "Досуг",
+    color: "--color-puzzle",
+    svg: "./assets/puzzle.svg",
+  },
+  {
+    id: 7,
+    name: "Покупки",
+    color: "--color-purchase",
+    svg: "./assets/purchase.svg",
+  },
+  {
+    id: 8,
+    name: "Питомцы",
+    color: "--color-orange",
+    svg: "./assets/paw.svg",
+  },
+];
+
 interface IOperation {
   category: string;
   typeOfPayment: string;
@@ -21,7 +85,7 @@ interface TransactionsProps {
 }
 const Transactions: FC<TransactionsProps> = ({ transactions }) => {
   const [filter, setFilter] = useState("");
-  const [transactionsData, setTransactionsData] = useState<ITransaction>([
+  const [transactionsData, setTransactionsData] = useState<ITransaction[]>([
     //на бэке сортировать по дате
     {
       day: "2024-11-24",

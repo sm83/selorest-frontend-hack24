@@ -44,7 +44,7 @@ const buttonData: ButtonDataItem[] = [
 
 const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [inputValue, setInputValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState<string>("0"); // Начальное значение — "0"
 
   useEffect(() => {
     setIsVisible(true);
@@ -53,12 +53,14 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
 
   const handleButtonClick = (value: number | string) => {
     if (typeof value === "number") {
-      setInputValue((prev) => `${prev}${value}`);
+      // Если текущее значение "0", заменяем его на вводимое число
+      setInputValue((prev) => (prev === "0" ? `${value}` : `${prev}${value}`));
     } else if (value === "clear") {
-      setInputValue((prev) => prev.slice(0, -1) || "0");
+      // Удаление последнего символа
+      setInputValue((prev) => (prev.length > 1 ? prev.slice(0, -1) : "0"));
     } else if (value === "complete") {
       console.log("Ввод завершен:", inputValue);
-      setInputValue("");
+      setInputValue("0"); // Сбрасываем поле ввода
       onClose();
     }
   };
@@ -83,7 +85,7 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
             <Image src={people} alt="Family" />
           </div>
         </div>
-        <div className="item11 item">{inputValue || "0"}</div>
+        <div className="item11 item">{inputValue}</div>
         {buttonData.map((button) => (
           <RegularButton
             key={`button-${button.el}`}
