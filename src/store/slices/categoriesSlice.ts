@@ -3,38 +3,40 @@ import customFetch from "@/utils/customFetch";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Dispatch, SetStateAction } from "react";
 
-interface ProfileData {
+interface CategoriesData {
 	id: string;
 }
 
-interface ProfileStorage {
-	profileData: ProfileData | null;
+interface CategoriesStorage {
+	categoriesData: CategoriesData | null;
 	pending: boolean;
 	error: string | null;
 }
 
-export interface UpdateProfileData {
+export interface UpdateCategoryData {
 	text: string;
 	image: string;
 }
 
-const initialState: ProfileStorage = {
-	profileData: null,
+const initialState: CategoriesStorage = {
+	categoriesData: null,
 	pending: false,
 	error: null,
 };
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const fetchProfileById = createAsyncThunk(
-	"profile/fetchProfile",
+export const fetchCategoriesByUserId = createAsyncThunk(
+	"categories/fetchCategories",
 	async (
 		{
 			id,
+			token,
 			authSensitiveSwitcher,
 			unauthorizedAction,
 		}: {
 			id: string;
+			token: string;
 			authSensitiveSwitcher: Dispatch<SetStateAction<boolean>>;
 			unauthorizedAction: () => void;
 		},
@@ -42,14 +44,14 @@ export const fetchProfileById = createAsyncThunk(
 	) => {
 		try {
 			const requestUrl = constructUrlWithPagination({
-				url: `${API_URL}/profiles/user-id/${id}`,
+				url: `${API_URL}/categories/user-id/${id}`,
 			});
+
+			console.log("here1");
 
 			if (requestUrl instanceof Error) {
 				throw requestUrl;
 			}
-
-			const token = localStorage.getItem("token");
 
 			const response = await customFetch({
 				url: requestUrl,
@@ -74,22 +76,22 @@ export const fetchProfileById = createAsyncThunk(
 
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
-			return rejectWithValue(error.message || "Failed to fetch profile");
+			return rejectWithValue(error.message || "Failed to fetch categories");
 		}
 	}
 );
 
-export const updateProfileById = createAsyncThunk(
-	"profile/updateProfileById",
+export const updateCategoryById = createAsyncThunk(
+	"categories/updateCategoriesById",
 	async (
 		{
 			id,
-			updatedProfile,
+			updatedCategory,
 			authSensitiveSwitcher,
 			unauthorizedAction,
 		}: {
 			id: string;
-			updatedProfile: UpdateProfileData;
+			updatedCategory: UpdateCategoryData;
 			authSensitiveSwitcher: Dispatch<SetStateAction<boolean>>;
 			unauthorizedAction: () => void;
 		},
@@ -97,7 +99,7 @@ export const updateProfileById = createAsyncThunk(
 	) => {
 		try {
 			const requestUrl = constructUrlWithPagination({
-				url: `${API_URL}/profiles/user-id/${id}`,
+				url: `${API_URL}/categories/id/${id}`,
 			});
 
 			if (requestUrl instanceof Error) {
@@ -110,7 +112,7 @@ export const updateProfileById = createAsyncThunk(
 				options: {
 					method: "PATCH",
 					headers: { "Content-Type": "application/json" },
-					body: updatedProfile,
+					body: updatedCategory,
 					credentials: "include",
 				},
 				authSensitiveSwitcher,
@@ -124,49 +126,49 @@ export const updateProfileById = createAsyncThunk(
 			}
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
 		} catch (error: any) {
-			return rejectWithValue(error.message || "Failed to update profile");
+			return rejectWithValue(error.message || "Failed to update category");
 		}
 	}
 );
 
-const profile = createSlice({
-	name: "profile",
+const categories = createSlice({
+	name: "categories",
 	initialState,
 	reducers: {
-		clearProfile(state) {
-			state.profileData = null;
+		clearCategories(state) {
+			state.categoriesData = null;
 		},
 	},
 	extraReducers: (builder) => {
 		builder
-			// fetchProfileById
-			.addCase(fetchProfileById.pending, (state) => {
+			// fetchCategoriesByUserId
+			.addCase(fetchCategoriesByUserId.pending, (state) => {
 				state.pending = true;
 				state.error = null;
 			})
-			.addCase(fetchProfileById.fulfilled, (state, action) => {
-				state.profileData = action.payload;
+			.addCase(fetchCategoriesByUserId.fulfilled, (state, action) => {
+				state.categoriesData = action.payload;
 				state.pending = false;
 			})
-			.addCase(fetchProfileById.rejected, (state, action) => {
+			.addCase(fetchCategoriesByUserId.rejected, (state, action) => {
 				state.pending = false;
 				state.error = action.payload as string;
 			})
 
 			// updateProfileById
-			.addCase(updateProfileById.pending, (state) => {
+			.addCase(updateCategoryById.pending, (state) => {
 				state.pending = true;
 				state.error = null;
 			})
-			.addCase(updateProfileById.fulfilled, (state, action) => {
-				state.profileData = action.payload;
+			.addCase(updateCategoryById.fulfilled, (state, action) => {
+				state.categoriesData = action.payload;
 				state.pending = false;
 			})
-			.addCase(updateProfileById.rejected, (state, action) => {
+			.addCase(updateCategoryById.rejected, (state, action) => {
 				state.pending = false;
 				state.error = action.payload as string;
 			});
 	},
 });
 
-export default profile.reducer;
+export default categories.reducer;
