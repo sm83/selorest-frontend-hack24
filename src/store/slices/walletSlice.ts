@@ -3,20 +3,19 @@ import customFetch from "@/utils/customFetch";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { Dispatch, SetStateAction } from "react";
 
-interface CategoriesData {
-  balance: number;
-  categoryName: string;
-  categoryPriority: string;
-  createdAt: string;
-  currency: number;
-  deleted: boolean;
-  icon: number | null;
+interface walletData {
   id: string;
+  balance: number;
+  walletType: string;
+  walletName: string;
+  deleted: boolean;
+  userId: string;
+  currency: number;
   updatedAt: string;
 }
 
-interface CategoriesStorage {
-  categoriesData: CategoriesData[] | null;
+interface walletStorage {
+  walletData: walletData[] | null;
   pending: boolean;
   error: string | null;
 }
@@ -26,16 +25,16 @@ export interface UpdateCategoryData {
   image: string;
 }
 
-const initialState: CategoriesStorage = {
-  categoriesData: null,
+const initialState: walletStorage = {
+  walletData: null,
   pending: false,
   error: null,
 };
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-export const fetchCategoriesByUserId = createAsyncThunk(
-  "categories/fetchCategories",
+export const fetchWalletByUserId = createAsyncThunk(
+  "wallet/fetchWallet",
   async (
     {
       id,
@@ -52,7 +51,7 @@ export const fetchCategoriesByUserId = createAsyncThunk(
   ) => {
     try {
       const requestUrl = constructUrlWithPagination({
-        url: `${API_URL}/categories/user-id/${id}`,
+        url: `${API_URL}/wallets/user-id/${id}`,
       });
 
       console.log("here1");
@@ -84,13 +83,13 @@ export const fetchCategoriesByUserId = createAsyncThunk(
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
-      return rejectWithValue(error.message || "Failed to fetch categories");
+      return rejectWithValue(error.message || "Failed to fetch wallet");
     }
   }
 );
 
 export const updateCategoryById = createAsyncThunk(
-  "categories/updateCategoriesById",
+  "wallet/updateWalletById",
   async (
     {
       id,
@@ -107,7 +106,7 @@ export const updateCategoryById = createAsyncThunk(
   ) => {
     try {
       const requestUrl = constructUrlWithPagination({
-        url: `${API_URL}/categories/id/${id}`,
+        url: `${API_URL}/wallet/id/${id}`,
       });
 
       if (requestUrl instanceof Error) {
@@ -139,26 +138,26 @@ export const updateCategoryById = createAsyncThunk(
   }
 );
 
-const categories = createSlice({
-  name: "categories",
+const wallet = createSlice({
+  name: "wallet",
   initialState,
   reducers: {
-    clearCategories(state) {
-      state.categoriesData = null;
+    clearWallet(state) {
+      state.walletData = null;
     },
   },
   extraReducers: (builder) => {
     builder
-      // fetchCategoriesByUserId
-      .addCase(fetchCategoriesByUserId.pending, (state) => {
+      // fetchWalletByUserId
+      .addCase(fetchWalletByUserId.pending, (state) => {
         state.pending = true;
         state.error = null;
       })
-      .addCase(fetchCategoriesByUserId.fulfilled, (state, action) => {
-        state.categoriesData = action.payload;
+      .addCase(fetchWalletByUserId.fulfilled, (state, action) => {
+        state.walletData = action.payload;
         state.pending = false;
       })
-      .addCase(fetchCategoriesByUserId.rejected, (state, action) => {
+      .addCase(fetchWalletByUserId.rejected, (state, action) => {
         state.pending = false;
         state.error = action.payload as string;
       })
@@ -169,7 +168,7 @@ const categories = createSlice({
         state.error = null;
       })
       .addCase(updateCategoryById.fulfilled, (state, action) => {
-        state.categoriesData = action.payload;
+        state.walletData = action.payload;
         state.pending = false;
       })
       .addCase(updateCategoryById.rejected, (state, action) => {
@@ -179,4 +178,4 @@ const categories = createSlice({
   },
 });
 
-export default categories.reducer;
+export default wallet.reducer;
