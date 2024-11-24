@@ -54,14 +54,19 @@ const buttonData: ButtonDataItem[] = [
 ];
 
 interface PostBody {
-  amount: number;
-  type: string;
-  currencyId: number;
-  categoryId: string;
-  walletId: string;
+  categoryName: string;
+  categoryPriority: string;
+  balance: number;
 }
 
-const ModalForm: React.FC<ModalFormProps> = ({ onClose }) => {
+interface IFormData {
+  categoryName: string;
+  categoryPriority: string;
+  balance: number;
+  categoryId: string;
+}
+
+const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [inputValue, setInputValue] = useState<string>("0");
 
@@ -73,14 +78,26 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose }) => {
     (state: RootState) => state.categories.categoriesData
   );
 
-  const [formData, setFormData] = useState({
-    amount: 0,
-    type: "add",
-    currencyId: 1,
-    categoryId: "",
-    walletId: "",
+  const [formData, setFormData] = useState<IFormData>({
+    categoryId: selectedCard?.id || "",
+    categoryName: selectedCard?.categoryName || "",
+    categoryPriority: selectedCard?.categoryPriority || "",
+    balance: selectedCard?.balance || 0,
   });
   
+
+  // Обновляем formData при изменении selectedCard
+  useEffect(() => {
+    if (selectedCard) {
+      setFormData({
+        categoryId: selectedCard.id,
+        categoryName: selectedCard.categoryName,
+        categoryPriority: selectedCard.categoryPriority,
+        balance: selectedCard.balance,
+      });
+      setInputValue(selectedCard.balance.toString());
+    }
+  }, [selectedCard]);
 
   useEffect(() => {
     setIsVisible(true);
@@ -111,31 +128,54 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose }) => {
   }, [dispatch]);
 
   const handleSubmit = async () => {
-    const { amount, type = "add", currencyId, categoryId, walletId } = formData;
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/transaction/`;
+    const { categoryId, categoryName, categoryPriority } = formData;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/categories/id/${categoryId}`;
     const body: PostBody = {
-      amount,
-      type: type,
-      currencyId,
-      categoryId,
-      walletId,
+      categoryName: categoryName,
+      balance: Number(inputValue),
+      categoryPriority: categoryPriority,
     };
 
     try {
-      const result = await customFetch({
+      await customFetch({
         url,
         expectedStatusCode: 200,
         options: {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
           body: body,
         },
+      }).then(() => {
+        const userId = localStorage.getItem("user-id");
+        const token = localStorage.getItem("token");
+
+        if (userId && token) {
+          dispatch(
+            fetchWalletByUserId({
+              id: userId,
+              token,
+              authSensitiveSwitcher: () => {},
+              unauthorizedAction: () => {},
+            })
+          );
+          dispatch(
+            fetchCategoriesByUserId({
+              id: userId,
+              token,
+              authSensitiveSwitcher: () => {},
+              unauthorizedAction: () => {},
+            })
+          );
+        }
       });
-      console.log(result);
     } catch (error) {
       console.log(error);
     }
   };
+
   function handleButtonClick(value: string | number): void {
     if (typeof value === "number") {
       setInputValue((prev) => (prev === "0" ? `${value}` : `${prev}${value}`));
@@ -145,10 +185,9 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose }) => {
       const amount = parseFloat(inputValue);
       setFormData((prevData) => ({
         ...prevData,
-        amount: amount || 0,
+        balance: amount,
       }));
       handleSubmit();
-      console.log("Ввод завершен:", inputValue);
       setInputValue("0");
       onClose();
     }

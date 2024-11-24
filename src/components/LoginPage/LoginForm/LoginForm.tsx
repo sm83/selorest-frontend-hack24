@@ -18,208 +18,208 @@ import { ProcessStatus } from "@/interfaces/processStatus.interface";
 import Link from "next/link";
 
 interface LoginFormDto {
-	email: string;
-	password: string;
+  email: string;
+  password: string;
 }
 
 interface LoginValidateErrors {
-	email: string[];
-	password: string[];
+  email: string[];
+  password: string[];
 }
 
 interface LoginSuccessResult {
-	id: string;
-	token: string;
+  id: string;
+  token: string;
 }
 
 const loginValidationSchema = yup.object().shape({
-	email: yup
-		.string()
-		.email("Неверный формат email")
-		.required("Email обязателен"),
-	password: yup.string().required("Пароль обязателен"),
+  email: yup
+    .string()
+    .email("Неверный формат email")
+    .required("Email обязателен"),
+  password: yup.string().required("Пароль обязателен"),
 });
 
 const LoginForm = ({
-	status,
-	setStatus,
+  status,
+  setStatus,
 }: {
-	status: ProcessStatus;
-	setStatus: Dispatch<SetStateAction<ProcessStatus>>;
+  status: ProcessStatus;
+  setStatus: Dispatch<SetStateAction<ProcessStatus>>;
 }) => {
-	const dispatch = useAppDispatch();
-	const { setIsAuth } = useAuth();
-	const router = useRouter();
+  const dispatch = useAppDispatch();
+  const { setIsAuth, setToken, setUserId } = useAuth();
+  const router = useRouter();
 
-	const [formValues, setFormValues] = useState<LoginFormDto>({
-		email: "",
-		password: "",
-	});
+  const [formValues, setFormValues] = useState<LoginFormDto>({
+    email: "",
+    password: "",
+  });
 
-	const [validationErrors, setValidationErrors] = useState<LoginValidateErrors>(
-		{ email: [], password: [] }
-	);
+  const [validationErrors, setValidationErrors] = useState<LoginValidateErrors>(
+    { email: [], password: [] }
+  );
 
-	const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-		const { name, value } = e.target;
-		setFormValues((prevValues) => ({
-			...prevValues,
-			[name]: value,
-		}));
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      [name]: value,
+    }));
 
-		// Убираем ошибку при изменении поля
-		setValidationErrors({ ...validationErrors, [name]: "" });
-	};
+    // Убираем ошибку при изменении поля
+    setValidationErrors({ ...validationErrors, [name]: "" });
+  };
 
-	const handleSubmit = async (e: React.FormEvent) => {
-		e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-		setValidationErrors({ email: [], password: [] });
+    setValidationErrors({ email: [], password: [] });
 
-		const { email, password } = formValues;
-		const url = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`;
-		const body: LoginFormDto = { email, password };
+    const { email, password } = formValues;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/auth/login`;
+    const body: LoginFormDto = { email, password };
 
-		try {
-			setStatus({ success: false, pending: true, error: null });
+    try {
+      setStatus({ success: false, pending: true, error: null });
 
-			await loginValidationSchema.validate(formValues, {
-				abortEarly: false,
-			});
+      await loginValidationSchema.validate(formValues, {
+        abortEarly: false,
+      });
 
-			const result = await customFetch({
-				url,
-				expectedStatusCode: 200,
-				options: {
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: body,
-					// credentials: 'include',
-				},
-			});
+      const result = await customFetch({
+        url,
+        expectedStatusCode: 200,
+        options: {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: body,
+          // credentials: 'include',
+        },
+      });
 
-			if (result instanceof Error) {
-				setStatus({
-					success: false,
-					pending: false,
-					error: result.message,
-				});
-			} else {
-				const data = result.data as LoginSuccessResult;
+      if (result instanceof Error) {
+        setStatus({
+          success: false,
+          pending: false,
+          error: result.message,
+        });
+      } else {
+        const data = result.data as LoginSuccessResult;
 
-				console.log(data);
+        localStorage.setItem("token", data.token);
+        setToken(data.token);
+        localStorage.setItem("user-id", data.id);
+        setUserId(data.id);
 
-				localStorage.setItem("token", data.token);
-				localStorage.setItem("user-id", data.id);
+        setStatus({
+          success: true,
+          pending: false,
+          error: null,
+        });
 
-				setStatus({
-					success: true,
-					pending: false,
-					error: null,
-				});
+        // fetching profile data
+        dispatch(
+          fetchProfileById({
+            id: data.id,
+            authSensitiveSwitcher: setIsAuth,
+            unauthorizedAction: () => {
+              router.push("/login");
+            },
+          })
+        );
 
-				// fetching profile data
-				dispatch(
-					fetchProfileById({
-						id: data.id,
-						authSensitiveSwitcher: setIsAuth,
-						unauthorizedAction: () => {
-							router.push("/login");
-						},
-					})
-				);
+        setIsAuth(true);
 
-				setIsAuth(true);
+        router.push("/app/categories");
+      }
+    } catch (error) {
+      setStatus({
+        success: false,
+        pending: false,
+        error: null,
+      });
 
-				router.push("/app/categories");
-			}
-		} catch (error) {
-			setStatus({
-				success: false,
-				pending: false,
-				error: null,
-			});
+      if (error instanceof yup.ValidationError) {
+        const errors: LoginValidateErrors = {
+          email: [],
+          password: [],
+        };
 
-			if (error instanceof yup.ValidationError) {
-				const errors: LoginValidateErrors = {
-					email: [],
-					password: [],
-				};
+        // Сортируем ошибки по полям
+        error.inner.forEach((err) => {
+          if (err.path === "email") {
+            errors.email.push(err.message);
+          } else if (err.path === "password") {
+            errors.password.push(err.message);
+          }
+        });
 
-				// Сортируем ошибки по полям
-				error.inner.forEach((err) => {
-					if (err.path === "email") {
-						errors.email.push(err.message);
-					} else if (err.path === "password") {
-						errors.password.push(err.message);
-					}
-				});
+        setValidationErrors(errors);
+      }
+    }
+  };
 
-				setValidationErrors(errors);
-			}
-		}
-	};
+  const renderError = (field: keyof LoginValidateErrors) =>
+    Boolean(validationErrors[field].length) &&
+    validationErrors[field].map((errorItem) => {
+      return (
+        <span className="error-message" key={errorItem}>
+          {errorItem}
+        </span>
+      );
+    });
 
-	const renderError = (field: keyof LoginValidateErrors) =>
-		Boolean(validationErrors[field].length) &&
-		validationErrors[field].map((errorItem) => {
-			return (
-				<span className="error-message" key={errorItem}>
-					{errorItem}
-				</span>
-			);
-		});
+  return (
+    <>
+      <div className="login-form">
+        <h2 className="login-form__header roboto-regular">Вход в систему</h2>
+        <form
+          className="login-form__form-itself"
+          onSubmit={handleSubmit}
+          noValidate
+        >
+          <RegularLoginInput
+            name="email"
+            placeholder="Логин"
+            type="email"
+            value={formValues.email}
+            onChange={handleChange}
+            style={{
+              border: validationErrors.email.length ? "1px solid red" : "",
+            }}
+          />
+          {renderError("email")}
 
-	return (
-		<>
-			<div className="login-form">
-				<h2 className="login-form__header roboto-regular">Вход в систему</h2>
-				<form
-					className="login-form__form-itself"
-					onSubmit={handleSubmit}
-					noValidate
-				>
-					<RegularLoginInput
-						name="email"
-						placeholder="Логин"
-						type="email"
-						value={formValues.email}
-						onChange={handleChange}
-						style={{
-							border: validationErrors.email.length ? "1px solid red" : "",
-						}}
-					/>
-					{renderError("email")}
+          <RegularLoginInput
+            name="password"
+            placeholder="Пароль"
+            type="password"
+            value={formValues.password}
+            onChange={handleChange}
+            style={{
+              border: validationErrors.password.length ? "1px solid red" : "",
+            }}
+          />
+          {renderError("password")}
 
-					<RegularLoginInput
-						name="password"
-						placeholder="Пароль"
-						type="password"
-						value={formValues.password}
-						onChange={handleChange}
-						style={{
-							border: validationErrors.password.length ? "1px solid red" : "",
-						}}
-					/>
-					{renderError("password")}
-
-					{status.success ? (
-						<SuccessIconAnimated size={24} />
-					) : (
-						<RegularButton
-							colorVariant={status.pending ? "in-use" : "success"}
-							type="submit"
-						>
-							{status.pending ? <Spinner1 color="white" size={18} /> : "Войти"}
-						</RegularButton>
-					)}
-					<span className="login-form__span">
-						Ещё нет аккаунта? <Link href="/register">Создать аккаунт</Link>
-					</span>
-				</form>
-			</div>
-		</>
-	);
+          {status.success ? (
+            <SuccessIconAnimated size={24} />
+          ) : (
+            <RegularButton
+              colorVariant={status.pending ? "in-use" : "success"}
+              type="submit"
+            >
+              {status.pending ? <Spinner1 color="white" size={18} /> : "Войти"}
+            </RegularButton>
+          )}
+          <span className="login-form__span">
+            Ещё нет аккаунта? <Link href="/register">Создать аккаунт</Link>
+          </span>
+        </form>
+      </div>
+    </>
+  );
 };
 
 export default LoginForm;

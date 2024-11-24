@@ -4,6 +4,7 @@ import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import "./NewWalletModal.scss";
 import clsx from "clsx";
 import customFetch from "@/utils/customFetch";
+import { useAuth } from "@/hooks";
 
 const NewWalletModal = ({
   setIsModalOpen,
@@ -30,16 +31,13 @@ const NewWalletModal = ({
     balance: 0,
   });
 
-  const [token, setToken] = useState<string | null>(null);
+  const { token, userId } = useAuth()
+
 
   useEffect(() => {
-    const user_id = localStorage.getItem("user-id");
-    const token = localStorage.getItem("token");
 
-    setData({ ...data, userId: user_id });
+    setData({ ...data, userId: userId });
 
-    setUserId(user_id);
-    setToken(token);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

@@ -56,8 +56,6 @@ export const fetchWalletByUserId = createAsyncThunk(
         url: `${API_URL}/wallets/user-id/${id}`,
       });
 
-      console.log("here1");
-
       if (requestUrl instanceof Error) {
         throw requestUrl;
       }

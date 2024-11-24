@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useEffect } from 'react';
+import { useEffect } from "react";
 
 const RootPage = () => {
   useEffect(() => {
-    window.location.href = '/login';
+    window.location.href = "/initial";
   }, []);
 
   return <></>;
