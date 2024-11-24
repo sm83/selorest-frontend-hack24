@@ -51,7 +51,7 @@ const RegisterForm = ({
 	setStatus: Dispatch<SetStateAction<ProcessStatus>>;
 }) => {
 	const dispatch = useAppDispatch();
-	const { setIsAuth } = useAuth();
+	const { setIsAuth, setToken, setUserId } = useAuth();
 	const router = useRouter();
 
 	const [formValues, setFormValues] = useState<RegisterFormDto>({
@@ -115,7 +115,9 @@ const RegisterForm = ({
 				const data = result.data as RegisterSuccessResult;
 
 				localStorage.setItem("token", data.token);
+				setToken(data.token);
 				localStorage.setItem("user-id", data.id);
+				setUserId(data.id);
 
 				setStatus({
 					success: true,

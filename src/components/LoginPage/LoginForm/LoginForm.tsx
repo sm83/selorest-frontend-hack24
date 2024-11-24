@@ -48,7 +48,7 @@ const LoginForm = ({
 	setStatus: Dispatch<SetStateAction<ProcessStatus>>;
 }) => {
 	const dispatch = useAppDispatch();
-	const { setIsAuth } = useAuth();
+	const { setIsAuth, setToken, setUserId } = useAuth();
 	const router = useRouter();
 
 	const [formValues, setFormValues] = useState<LoginFormDto>({
@@ -110,7 +110,9 @@ const LoginForm = ({
 				console.log(data);
 
 				localStorage.setItem("token", data.token);
+				setToken(data.token);
 				localStorage.setItem("user-id", data.id);
+				setUserId(data.id);
 
 				setStatus({
 					success: true,
