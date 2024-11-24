@@ -21,10 +21,15 @@ import complete from "./assets/Complete.svg";
 interface ModalFormProps {
   onClose: () => void;
   selectedCard: {
-    title: string;
-    image: string;
-    el: number;
-    mony: number;
+    id: string;
+    categoryName: string;
+    categoryPriority: string;
+    balance: number;
+    deleted: boolean;
+    currency: number;
+    userId: string;
+    createdAt: string;
+    updatedAt: string;
   } | null;
 }
 

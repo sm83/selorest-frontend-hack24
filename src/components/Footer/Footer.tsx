@@ -1,75 +1,88 @@
 "use client";
 
-import Link from "next/link";
-import wallet from "./assets/wallet-outline.svg";
-import grid from "./assets/grid-outline.svg";
-import news from "./assets/newspaper-outline.svg";
-import server from "./assets/server-outline.svg";
-import bar from "./assets/bar-chart-outline.svg";
-import Image from "next/image";
-
 import "./Footer.scss";
-import { AppUrlConfig } from "@/utils/url.config";
-import { useState } from "react";
-
-interface IButton {
-  image: any;
-  text: string;
-  url: string;
-}
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const buttonsArray: IButton[] = [
-  {
-    image: wallet,
-    text: "Счета",
-    url: AppUrlConfig.APP_ACCOUNTS,
-  },
-  {
-    image: grid,
-    text: "Категории",
-    url: AppUrlConfig.APP_CATEGORIES,
-  },
-  {
-    image: news,
-    text: "Операции",
-    url: AppUrlConfig.APP_TRANSACTIONS,
-  },
-  {
-    image: server,
-    text: "Анализ",
-    url: AppUrlConfig.APP_ANALIS,
-  },
-  {
-    image: bar,
-    text: "Обзор",
-    url: AppUrlConfig.APP_REVIEWS,
-  },
-];
+import FooterBtn from "./FooterBtn/FooterBtn";
+import Wallet from "@/svgComponents/Wallet/Wallet";
+import GridOutline from "@/svgComponents/GridOutline/GridOutline";
+import NewspaperOutline from "@/svgComponents/NewspaperOutline/NewspaperOutline";
+import ServerOutline from "@/svgComponents/ServerOutline/ServerOutline";
+import BarChartOutline from "@/svgComponents/BarChartOutline/BarChartOutline";
+import { useEffect, useState } from "react";
 
 const Footer = () => {
-  const [activeButton, setActiveButton] = useState<string>(
-    AppUrlConfig.APP_CATEGORIES
-  );
+  const [activeLink, setActiveLink] = useState<string>("");
+
+  console.log("activeLink: ", activeLink);
+
+  useEffect(() => {
+    setActiveLink(window.location.pathname);
+  }, []);
 
   return (
-    <div className="Footer">
-      {buttonsArray.map((buttonItem, index) => {
-        const isActive = activeButton === buttonItem.url;
-
-        return (
-          <Link
-            key={index}
-            href={buttonItem.url}
-            onClick={() => setActiveButton(buttonItem.url)}
-            className={isActive ? "active" : ""}
-          >
-            <Image src={buttonItem.image} alt={buttonItem.text} />
-            <span>{buttonItem.text}</span>
-          </Link>
-        );
-      })}
+    <div className="footer">
+      <FooterBtn
+        href={"/app/wallets"}
+        text={"Счета"}
+        activeLink={activeLink}
+        setActiveLink={setActiveLink}
+      >
+        <Wallet color={activeLink === "/app/wallets" ? "#2d9cdb" : "#DEDEDE"} />
+      </FooterBtn>
+      <FooterBtn
+        href={"/app/categories"}
+        text={"Категории"}
+        activeLink={activeLink}
+        setActiveLink={setActiveLink}
+      >
+        <GridOutline
+          color={activeLink === "/app/categories" ? "#2d9cdb" : "#DEDEDE"}
+        />
+      </FooterBtn>
+      <FooterBtn
+        href={"/app/history"}
+        text={"Операции"}
+        activeLink={activeLink}
+        setActiveLink={setActiveLink}
+      >
+        <NewspaperOutline
+          color={activeLink === "/app/history" ? "#2d9cdb" : "#DEDEDE"}
+        />
+      </FooterBtn>
+      <FooterBtn
+        href={"/app/analysis"}
+        text={"Анализ"}
+        activeLink={activeLink}
+        setActiveLink={setActiveLink}
+      >
+        <ServerOutline
+          color={activeLink === "/app/analysis" ? "#2d9cdb" : "#DEDEDE"}
+        />
+      </FooterBtn>
+      <FooterBtn
+        href={"/app/survey"}
+        text={"Обзор"}
+        activeLink={activeLink}
+        setActiveLink={setActiveLink}
+      >
+        <BarChartOutline
+          color={activeLink === "/app/survey" ? "#2d9cdb" : "#DEDEDE"}
+        />
+      </FooterBtn>
     </div>
   );
 };
 
 export default Footer;
+
+// return (
+//   <Link
+//     key={buttonItem.url}
+//     href={buttonItem.url}
+//     onClick={() => {
+//       router.push(buttonItem.url);
+//     }}
+//     className={isActive ? "active" : ""}
+//   >
+
+//   </Link>
+// );

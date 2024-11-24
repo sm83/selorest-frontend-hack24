@@ -1,28 +1,28 @@
 @use "/public/fonts/fonts.scss";
 
 :root {
-  color-scheme: dark;
+	color-scheme: dark;
 }
 /* example materials */
 :root {
-  --header-height: 58px;
-  --footer-height: 100px;
+	--header-height: 58px;
+	--footer-height: 100px;
 }
 
 /* semantic size variables */
 :root {
-  --example-header-height: 80px;
-  --sidebar-width: 370px;
+	--example-header-height: 80px;
+	--sidebar-width: 370px;
 
-  --register-header-height: 96px;
-  --register-footer-height: 96px;
+	--register-header-height: 96px;
+	--register-footer-height: 96px;
 }
 
 /* semantic color variables */
 :root {
-  --color-header-main: hsl(0, 0%, 97%);
-  --color-header-border: hsl(0, 0%, 93%);
-  --color-header-shadow: hsla(0, 0%, 80%, 0.5);
+	--color-header-main: hsl(0, 0%, 97%);
+	--color-header-border: hsl(0, 0%, 93%);
+	--color-header-shadow: hsla(0, 0%, 80%, 0.5);
 
   --color-purchase: rgba(78, 202, 232, 1);
   --color-puzzle: rgba(175, 242, 24, 1);
@@ -33,115 +33,120 @@
   --color-transport: rgba(66, 139, 249, 1);
   --color-orange: rgba(242, 153, 74, 1);
   --color-pink: rgba(237, 140, 140, 1);
-  --color-grey2: rgba(79, 79, 79, 1);
+	--color-grey2: rgba(79, 79, 79, 1);
   --color-grey3: rgba(121, 118, 125, 1);
-  --color-accent: rgba(45, 156, 219, 1);
-  --color-expenses: rgba(211, 77, 133, 1);
-  --color-black: rgba(19, 19, 19, 1);
-  --color-dark-grey: rgba(28, 28, 30, 1);
-  --color-grey: rgba(222, 222, 222, 1);
-  --color-white: rgba(255, 255, 255, 1);
+	--color-accent: rgba(45, 156, 219, 1);
+	--color-expenses: rgba(211, 77, 133, 1);
+	--color-black: rgba(19, 19, 19, 1);
+	--color-dark-grey: rgba(28, 28, 30, 1);
+	--color-grey: rgba(222, 222, 222, 1);
+	--color-white: rgba(255, 255, 255, 1);
 
-  --blue-almostBlack: #091633;
-  --blue-dark: #1b449a;
-  --blue-regular: #1e4cac;
-  --blue-light: #345db4;
-  --blue-lighter: #4a6fbc;
-  --blue-almostWhite: #e8edf6;
+	--blue-almostBlack: #091633;
+	--blue-dark: #1b449a;
+	--blue-regular: #1e4cac;
+	--blue-light: #345db4;
+	--blue-lighter: #4a6fbc;
+	--blue-almostWhite: #e8edf6;
 
-  --gray-regular: hsl(0, 0%, 70%);
-  --gray-almostWhite: hsl(0, 0%, 96%);
+	--gray-regular: hsl(0, 0%, 70%);
+	--gray-almostWhite: hsl(0, 0%, 96%);
 
-  --color-background: white;
-  --color-background-secondary: #f0f2f5;
+	--color-background: white;
+	--color-background-secondary: #f0f2f5;
 
-  --table-header: #f5f5f5;
-  --table-border: #d8d8d8;
-  --table-selected-input: #c7c8ca;
+	--table-header: #f5f5f5;
+	--table-border: #d8d8d8;
+	--table-selected-input: #c7c8ca;
 }
 
 /* semantic github color variables */
 :root {
-  --github-background-dark: #010409;
-  --github-background-light: #0d1117;
-  --github-background-lighter: #151b23;
+	--github-background-dark: #010409;
+	--github-background-light: #0d1117;
+	--github-background-lighter: #151b23;
 
-  --github-border: #3d444d;
+	--github-border: #3d444d;
 
-  --github-selected-navigation-underline: #f78166;
+	--github-selected-navigation-underline: #f78166;
 
-  --github-button-background: #212830;
+	--github-button-background: #212830;
 
-  --github-text-primary: #f0f6fc;
-  --github-text-secondary: #9198a1;
-  --github-text-link: #4493f8;
+	--github-text-primary: #f0f6fc;
+	--github-text-secondary: #9198a1;
+	--github-text-link: #4493f8;
 
-  --github-form-transparent-header: hsla(217, 45%, 13%, 0.2);
-  --github-form-transparent-background: hsla(217, 45%, 19%, 0.2);
-  --github-selected-background: #121d2f;
-  --github-selected-border: #2a63b3;
+	--github-form-transparent-header: hsla(217, 45%, 13%, 0.2);
+	--github-form-transparent-background: hsla(217, 45%, 19%, 0.2);
+	--github-selected-background: #121d2f;
+	--github-selected-border: #2a63b3;
 
-  --github-divider: #2f353d;
+	--github-divider: #2f353d;
 
-  --github-text-semitransparent: hsla(0, 0%, 100%, 0.8);
-  --github-text-verytransparent: hsla(0, 0%, 100%, 0.6);
-  --github-text-grayhover: hsl(0, 0%, 80%);
+	--github-text-semitransparent: hsla(0, 0%, 100%, 0.8);
+	--github-text-verytransparent: hsla(0, 0%, 100%, 0.6);
+	--github-text-grayhover: hsl(0, 0%, 80%);
 
-  --github-button-default-background: #212830;
-  --github-button-default-background-hover: #262c36;
-  --github-button-default-border: #3d444d;
+	--github-button-default-background: #212830;
+	--github-button-default-background-hover: #262c36;
+	--github-button-default-border: #3d444d;
 
-  --github-success-background: #238636;
-  --github-success-background-hover: #29903b;
-  --github-success-border: #39924a;
+	--github-success-background: #238636;
+	--github-success-background-hover: #29903b;
+	--github-success-border: #39924a;
 
-  --github-warning-background: #272116;
-  --github-warning-border: #634711;
-  --github-warning-fill: #d29922;
+	--github-warning-background: #272116;
+	--github-warning-border: #634711;
+	--github-warning-fill: #d29922;
 
-  --github-danger-button-border-hover: #bd393a;
-  --github-danger-background-hover: #b62324;
-  --github-danger-text: #fa5e55;
-  --github-danger-area-border: #6b2a2b;
+	--github-danger-button-border-hover: #bd393a;
+	--github-danger-background-hover: #b62324;
+	--github-danger-text: #fa5e55;
+	--github-danger-area-border: #6b2a2b;
 
-  --github-spinner-semitransparent: hsla(0, 0%, 100%, 0.5);
+	--github-spinner-semitransparent: hsla(0, 0%, 100%, 0.5);
 }
 
 /* fonts */
 .roboto-thin {
-  font-family: "Roboto";
-  font-weight: 100;
+	font-family: "Roboto";
+	font-weight: 100;
 }
 
 .roboto-light {
-  font-family: "Roboto";
-  font-weight: 300;
+	font-family: "Roboto";
+	font-weight: 300;
 }
 
 .roboto-regular {
-  font-family: "Roboto";
-  font-weight: 400;
+	font-family: "Roboto";
+	font-weight: 400;
 }
 
 .roboto-regular-italic {
-  font-family: "Roboto";
-  font-weight: 400;
-  font-style: italic;
+	font-family: "Roboto";
+	font-weight: 400;
+	font-style: italic;
 }
 
 .roboto-medium {
-  font-family: "Roboto";
-  font-weight: 500;
+	font-family: "Roboto";
+	font-weight: 500;
 }
 
 .roboto-bold {
-  font-family: "Roboto";
-  font-weight: 700;
+	font-family: "Roboto";
+	font-weight: 700;
 }
 
 .roboto-black {
-  font-family: "Roboto";
-  font-weight: 900;
+	font-family: "Roboto";
+	font-weight: 900;
+}
+
+.tinkoff-sans {
+	font-family: "Tinkoff Sans";
+	font-weight: 400;
 }
 
 // scrollbar customization down bellow
@@ -178,37 +183,37 @@
 
 html,
 body {
-  height: 100vh;
-  width: 100vw;
-  overflow: hidden;
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: "Roboto";
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	color: var(--foreground);
+	background: var(--background);
+	font-family: "Roboto";
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 * {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  font-weight: normal;
-  font-family: "TinkoffSans-Regular";
+	box-sizing: border-box;
+	padding: 0;
+	margin: 0;
+	font-weight: normal;
+	font-family: "Tinkoff Sans";
 
-  color: #f0f6fc;
+	color: #f0f6fc;
 }
 
 a {
-  color: var(--github-text-link);
-  text-decoration: none;
+	color: var(--github-text-link);
+	text-decoration: none;
 
-  &:hover {
-    text-decoration: underline;
-  }
+	&:hover {
+		text-decoration: underline;
+	}
 }
 
 /* http://meyerweb.com/eric/tools/css/reset/ 
@@ -243,24 +248,24 @@ footer, header, hgroup, menu, nav, section {
     display: block;
 }
 body {
-  line-height: 1;
+	line-height: 1;
 }
 ol,
 ul {
-  list-style: none;
+	list-style: none;
 }
 blockquote,
 q {
-  quotes: none;
+	quotes: none;
 }
 blockquote:before,
 blockquote:after,
 q:before,
 q:after {
-  content: "";
-  content: none;
+	content: "";
+	content: none;
 }
 table {
-  border-collapse: collapse;
-  border-spacing: 0;
+	border-collapse: collapse;
+	border-spacing: 0;
 }

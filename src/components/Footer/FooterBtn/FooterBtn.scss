@@ -1,0 +1,31 @@
+.footer-btn {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: 12px;
+
+	text-decoration: none;
+	color: inherit;
+	cursor: pointer;
+
+	outline: none;
+	border: 0;
+
+	background-color: transparent;
+
+	&:hover {
+		color: #2d9cdb;
+	}
+
+	&_active {
+		color: #2d9cdb;
+	}
+}
+
+.button-span {
+	color: #dedede;
+
+	&_active {
+		color: #2d9cdb;
+	}
+}
