@@ -4,6 +4,7 @@ import "./CategoryModal.scss";
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { icons } from "@/constants/icon/icon.constant";
 import customFetch from "@/utils/customFetch";
+import { useAuth } from "@/hooks";
 
 interface ModalFormProps {
   onClose: () => void;
@@ -20,9 +21,9 @@ interface FormData {
 
 const CategoryModal: React.FC<ModalFormProps> = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [token, setToken] = useState<string | null>(null);
+  const { token, userId } = useAuth();
   const [formData, setFormData] = useState<FormData>({
-    userId: null,
+    userId: userId,
     categoryName: "",
     currency: 1,
     balance: 0,
@@ -38,7 +39,6 @@ const CategoryModal: React.FC<ModalFormProps> = ({ onClose }) => {
         ...prev,
         userId: storedUserId,
       }));
-      setToken(localStorage.getItem("token"));
     }
     setIsVisible(true);
 
@@ -56,44 +56,34 @@ const CategoryModal: React.FC<ModalFormProps> = ({ onClose }) => {
   const handleSubmit = async () => {
     console.log(token);
 
-    if (formData.userId) {
-      const {
-        userId,
-        categoryName,
-        categoryPriority,
-        currency,
-        balance,
-        icon,
-      } = formData;
-      const url = `${process.env.NEXT_PUBLIC_API_URL}/categories`;
-      const body: Omit<FormData, "userId"> & { userId: string } = {
-        userId,
-        categoryName,
-        currency,
-        balance,
-        icon,
-        categoryPriority,
-      };
+    const { categoryName, categoryPriority, currency, balance, icon } =
+      formData;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/categories`;
+    const body: Omit<FormData, "userId"> & { userId: string } = {
+      userId: userId,
+      categoryName,
+      currency,
+      balance,
+      icon,
+      categoryPriority,
+    };
 
-      try {
-        await customFetch({
-          url,
-          expectedStatusCode: 200,
-          options: {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify(body),
+    try {
+      await customFetch({
+        url,
+        expectedStatusCode: 200,
+        options: {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
-        });
-        onClose();
-      } catch (error) {
-        console.error("Ошибка при сохранении категории:", error);
-      }
-    } else {
-      console.error("Пользователь не авторизован!");
+          body: body,
+        },
+      });
+      onClose();
+    } catch (error) {
+      console.error("Ошибка при сохранении категории:", error);
     }
   };
 
