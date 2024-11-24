@@ -50,6 +50,8 @@ export const fetchWalletByUserId = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
+        console.log(id, '1');
+        
       const requestUrl = constructUrlWithPagination({
         url: `${API_URL}/wallets/user-id/${id}`,
       });

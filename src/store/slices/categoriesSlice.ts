@@ -1,6 +1,7 @@
 import constructUrlWithPagination from "@/utils/constructUrlWithPagination";
 import customFetch from "@/utils/customFetch";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { error } from "console";
 import { Dispatch, SetStateAction } from "react";
 
 interface CategoriesData {
@@ -78,8 +79,12 @@ export const fetchCategoriesByUserId = createAsyncThunk(
       });
 
       if (response instanceof Error) {
+		console.log("error");
+		
         throw response;
       } else {
+		console.log(response.data);
+		
         return response.data;
       }
 
