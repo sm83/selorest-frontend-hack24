@@ -1,0 +1,55 @@
+.ReviewsPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 30px;
+    background-color: #1c1c1e;
+    height: 100%;
+    border-radius: 26px 26px 0 0;
+    padding: 0;
+
+    .ReviewsPageHeader {
+        display: flex;
+        justify-content: center;
+        gap: 100px;
+        align-items: center;
+        padding: 10px;
+
+        div {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        &__left {
+            span {
+                color: #2D9CDB;
+            }
+        }
+
+        &__right {
+            span {
+                color: #D34D85;
+            }
+        }
+    }
+
+    .progressWeek {
+        display: flex;
+        justify-content: center;
+
+        &__day {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+
+            .col {
+                border: 3px solid white;
+                border-radius: 3px;
+                height: 100px;
+            }
+        }
+
+    }
+}
