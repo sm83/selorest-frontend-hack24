@@ -49,22 +49,26 @@ const NewWalletModal = ({
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const url = `${process.env.NEXT_PUBLIC_API_URL}/wallet/`; // Укажите правильный URL
-    const body = { ...data };
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/wallets/`; // Укажите правильный URL
+    const body = JSON.stringify(data);
 
     try {
-      const result = await customFetch({
-        url,
-        expectedStatusCode: 200,
-        options: {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body), // Преобразуем данные в JSON
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
+        body,
       });
 
-      console.log("Результат POST-запроса:", result);
-      setIsModalOpen(false); // Закрыть модальное окно после успешной отправки
+      if (response.ok) {
+        const result = await response.json();
+        console.log("Результат POST-запроса:", result);
+        setIsModalOpen(false); // Закрыть модальное окно после успешной отправки
+      } else {
+        console.error("Ошибка:", response.status, response.statusText);
+      }
     } catch (error) {
       console.error("Ошибка при отправке данных:", error);
     }
