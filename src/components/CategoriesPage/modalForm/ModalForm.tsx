@@ -1,7 +1,7 @@
 "use client";
 
-import React, { use, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { fetchWalletByUserId } from "@/store/slices/walletSlice";
 import { fetchCategoriesByUserId } from "@/store/slices/categoriesSlice";
 import customFetch from "@/utils/customFetch";
@@ -13,10 +13,10 @@ import Image from "next/image";
 import RegularButton from "@/commonComponents/RegularButton/RegularButton";
 
 import cart from "./assets/card-outline.svg";
-import people from "./assets/people-outline.svg";
 
 import clear from "./assets/Clear.svg";
 import complete from "./assets/Complete.svg";
+import { useAppDispatch, useAppSelector } from "@/hooks";
 
 interface ModalFormProps {
   onClose: () => void;
@@ -57,21 +57,27 @@ interface PostBody {
   amount: number;
   type: string;
   currencyId: number;
-  categoryId: number;
+  categoryId: string;
   walletId: string;
 }
 
-const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
+const ModalForm: React.FC<ModalFormProps> = ({ onClose }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [inputValue, setInputValue] = useState<string>("0");
 
-  const dispatch = useDispatch();
-  const wallet = useSelector((state: RootState) => state.wallet.walletData);
-  // console. ("wallet", wallet);
+  const dispatch = useAppDispatch();
+  const wallet = useAppSelector((state: RootState) => state.wallet.walletData);
   const categories = useSelector(
     (state: RootState) => state.categories.categoriesData
   );
-  // console.log("categories", categories);
+
+  const [formData, setFormData] = useState({
+    amount: 0,
+    type: "add",
+    currencyId: 1,
+    categoryId: "",
+    walletId: "",
+  });
 
   useEffect(() => {
     setIsVisible(true);
@@ -101,30 +107,12 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
     return () => setIsVisible(false);
   }, [dispatch]);
 
-  const handleButtonClick = (value: number | string) => {
-    if (typeof value === "number") {
-      setInputValue((prev) => (prev === "0" ? `${value}` : `${prev}${value}`));
-    } else if (value === "clear") {
-      setInputValue((prev) => (prev.length > 1 ? prev.slice(0, -1) : "0"));
-    } else if (value === "complete") {
-      console.log("Ввод завершен:", inputValue);
-      setInputValue("0");
-      onClose();
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    const {
-      amount,
-      type = "add",
-      currencyId,
-      categoryId,
-      walletId,
-    } = formValues;
+  const handleSubmit = async () => {
+    const { amount, type = "add", currencyId, categoryId, walletId } = formData;
     const url = `${process.env.NEXT_PUBLIC_API_URL}/transaction/`;
     const body: PostBody = {
       amount,
-      type: "add",
+      type: type,
       currencyId,
       categoryId,
       walletId,
@@ -140,10 +128,29 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
           body: body,
         },
       });
+      console.log(result);
     } catch (error) {
       console.log(error);
     }
   };
+  function handleButtonClick(value: string | number): void {
+    if (typeof value === "number") {
+      setInputValue((prev) => (prev === "0" ? `${value}` : `${prev}${value}`));
+    } else if (value === "clear") {
+      setInputValue("0");
+    } else if (value === "complete") {
+      const amount = parseFloat(inputValue);
+      setFormData((prevData) => ({
+        ...prevData,
+        amount: amount || 0,
+      }));
+      handleSubmit();
+      console.log("Ввод завершен:", inputValue);
+      setInputValue("0");
+      onClose();
+    }
+  }
+
   return (
     <div className="ModalForm">
       <div className="overlay" onClick={onClose}></div>
@@ -155,7 +162,7 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
             style={{ backgroundColor: "#DEDEDE" }}
           >
             <div className="card__text">
-              <span className="card__span">Со счета</span>
+              <span className="card__span"></span>
               <select id="select" className="card__select">
                 {wallet &&
                   wallet.map((wall) => (
