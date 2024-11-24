@@ -1,4 +1,4 @@
-'use client'
+"use client";
 
 import Link from "next/link";
 import wallet from "./assets/wallet-outline.svg";
@@ -12,8 +12,13 @@ import "./Footer.scss";
 import { AppUrlConfig } from "@/utils/url.config";
 import { useState } from "react";
 
+interface IButton {
+  image: any;
+  text: string;
+  url: string;
+}
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const buttons: Array<{ image: any; text: string; url: string }> = [
+const buttonsArray: IButton[] = [
   {
     image: wallet,
     text: "Счета",
@@ -42,22 +47,24 @@ export const buttons: Array<{ image: any; text: string; url: string }> = [
 ];
 
 const Footer = () => {
-  const [activeButton, setActiveButton] = useState<string>(AppUrlConfig.APP_CATEGORIES);
+  const [activeButton, setActiveButton] = useState<string>(
+    AppUrlConfig.APP_CATEGORIES
+  );
 
   return (
     <div className="Footer">
-      {buttons.map((b, index) => {
-        const isActive = activeButton === b.url;
+      {buttonsArray.map((buttonItem, index) => {
+        const isActive = activeButton === buttonItem.url;
 
         return (
           <Link
             key={index}
-            href={b.url}
-            onClick={() => setActiveButton(b.url)}
+            href={buttonItem.url}
+            onClick={() => setActiveButton(buttonItem.url)}
             className={isActive ? "active" : ""}
           >
-            <Image src={b.image} alt={b.text} />
-            <span>{b.text}</span>
+            <Image src={buttonItem.image} alt={buttonItem.text} />
+            <span>{buttonItem.text}</span>
           </Link>
         );
       })}
