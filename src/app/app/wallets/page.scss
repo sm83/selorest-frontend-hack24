@@ -1,9 +1,54 @@
-.bils-page-wrapper {
-  width: 100%;
-  height: 100%;
+.wrapper-page-wrapper {
+	width: 100%;
+	height: 100%;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-end;
+	align-items: center;
+}
+
+.wallets-page {
+	width: 100%;
+	height: calc(100% - 25px);
+
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+
+	gap: 16px;
+
+	padding-top: 24px;
+	border-radius: 26px 26px 0 0;
+
+	background-color: #1c1c1e;
+
+	&__summary {
+		width: 100%;
+
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+
+		padding: 0 25px;
+	}
+
+	&__list {
+		width: 100%;
+
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: center;
+
+		gap: 16px;
+	}
+
+	&__summary-span {
+		color: #2d9cdb;
+
+		font-size: 20px;
+	}
 }
