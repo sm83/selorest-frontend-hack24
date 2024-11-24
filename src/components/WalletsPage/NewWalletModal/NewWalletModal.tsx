@@ -78,33 +78,6 @@ const NewWalletModal = ({
 						<input className="balance-area__input-itself" />
 					</div>
 				</div>
-
-				{/* <div className="BilModalContent__modal_data-block">
-					<div className="BilModalContent__modal_remainder BilModalContent__modal_input">
-						<span className="BilModalContent__modal_remainder-text">
-							Остаток на счёте
-						</span>
-						<span className="BilModalContent__modal_remainder-count">0₽</span>
-					</div>
-					<div className="BilModalContent__modal_input BilModalContent__modal_balance">
-						<span className="BilModalContent__modal_remainder-text">
-							Учитывать в общем балансе
-						</span>
-						<label
-							htmlFor="checkbox-1"
-							className="BilModalContent__modal_switch"
-						>
-							<input
-								id="checkbox-1"
-								type="checkbox"
-								className="BilModalContent__modal_checkbox"
-								checked={includeInTotal}
-								onChange={(e) => setIncludeInTotal(e.target.checked)}
-							/>
-							<span className="BilModalContent__modal_slider round"></span>
-						</label>
-					</div>
-				</div> */}
 			</form>
 		</div>
 	);
