@@ -1,8 +1,23 @@
+.footer-wrapper {
+	position: relative;
+
+	display: flex;
+	width: 100%;
+	justify-content: space-around;
+	align-items: center;
+	height: 100px;
+
+	background-color: #1c1c1e;
+}
+
 .footer {
 	display: flex;
 	width: 100%;
 	justify-content: space-around;
 	align-items: center;
-	max-height: 100px;
 	height: 100px;
+
+	background-color: #131313;
+
+	border-radius: 16px 16px 0 0;
 }
