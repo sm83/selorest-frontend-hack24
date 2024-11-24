@@ -5,7 +5,7 @@ services:
       dockerfile: Dockerfile
     container_name: nextjs-app
     ports:
-      - '3000:3000'
+      - "3000:3000"
     networks:
       - app-network
 
@@ -14,8 +14,10 @@ services:
     container_name: nginx
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt # Добавлен том для сертификатов
     ports:
-      - '80:80'
+      - "80:80"
+      - "443:443" # Открыт порт для HTTPS
     depends_on:
       - app
     networks:
