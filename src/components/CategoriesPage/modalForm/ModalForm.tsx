@@ -174,7 +174,7 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
           >
             <div className="card__text">
               <span className="card__span">Со счета</span>
-              <select id="select" className="card__select">
+              <select id="select" className="card__select card__select_walet">
                 {categories &&
                   categories.map((cat) => (
                     <option key={cat.id} className="card__option">

@@ -141,6 +141,9 @@
         line-height: 24.62px;
         font-weight: 400;
         background: var(--color-grey);
+        &_walet {
+          background: var(--color-family);
+        }
       }
       .card__option {
         color: var(--color-black);
