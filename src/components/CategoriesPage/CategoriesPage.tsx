@@ -64,6 +64,14 @@ const CategoriesPage = () => {
   const { setIsAuth } = useAuth();
   const router = useRouter();
 
+  const categories = useAppSelector((state) => state.categories.categoriesData);
+
+  const [walletParam, setWalletParam] = useState<"dohod" | "rashod">("rashod");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCard, setSelectedCard] = useState<ExpenseDataItem | null>(
+    null
+  );
+
   useEffect(() => {
     if (userId && token) {
       dispatch(
@@ -77,15 +85,7 @@ const CategoriesPage = () => {
         })
       );
     }
-  }, [dispatch, router, setIsAuth, userId, token]);
-
-  const categories = useAppSelector((state) => state.categories.categoriesData);
-
-  const [walletParam, setWalletParam] = useState<"dohod" | "rashod">("rashod");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState<ExpenseDataItem | null>(
-    null
-  );
+  }, [dispatch, router, setIsAuth, userId, token, isModalOpen]);
 
   const isExpense = walletParam === "rashod";
   const currentData = isExpense ? categories : incomeData;
@@ -135,6 +135,7 @@ const CategoriesPage = () => {
       );
       ctx.font = "bold 14px Arial";
       ctx.fillStyle = "#D34D85";
+      ctx.border = "1px solid white";
       ctx.fillText(`${totalAmount}₽`, width / 2, height / 2 + 10);
       ctx.restore();
     },
