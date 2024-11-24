@@ -54,8 +54,6 @@ const CategoryModal: React.FC<ModalFormProps> = ({ onClose }) => {
   };
 
   const handleSubmit = async () => {
-    console.log(token);
-
     const { categoryName, categoryPriority, currency, balance, icon } =
       formData;
     const url = `${process.env.NEXT_PUBLIC_API_URL}/categories`;
