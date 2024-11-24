@@ -1,8 +1,9 @@
 "use client";
 
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import "./NewWalletModal.scss";
 import clsx from "clsx";
+import customFetch from "@/utils/customFetch";
 
 const NewWalletModal = ({
 	setIsModalOpen,
@@ -11,11 +12,79 @@ const NewWalletModal = ({
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 	isModalOpen: boolean;
 }) => {
+	// Интерфейс для данных нового кошелька
+	interface INewWalletData {
+		userId: string | null;
+		currency: number;
+		walletType: "cash" | "card";
+		walletName: string;
+		balance: number;
+	}
+
+	// Состояние для данных формы
+	const [data, setData] = useState<INewWalletData>({
+		userId: "user-id-placeholder", // Замените на реальное значение userId
+		currency: 1, // ID валюты по умолчанию
+		walletType: "card", // Тип кошелька по умолчанию
+		walletName: "",
+		balance: 0,
+	});
+
+	const [userId, setUserId] = useState<string | null>(null);
+	const [token, setToken] = useState<string | null>(null);
+
+	useEffect(() => {
+		const user_id = localStorage.getItem("user-id");
+		const token = localStorage.getItem("token");
+
+		setData({ ...data, userId: userId });
+
+		setUserId(user_id);
+		setToken(token);
+	}, [data, userId]);
+
+	// Обработчик изменения полей
+	const handleChange = (
+		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+	) => {
+		const { name, value } = e.target;
+
+		setData((prevData) => ({
+			...prevData,
+			[name]: name === "balance" ? parseFloat(value) || 0 : value, // Если поле — баланс, преобразуем значение в число
+		}));
+	};
+
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const handleSubmit = (e: any) => {
+	const handleSubmit = async (e: any) => {
 		e.preventDefault();
 
-		setIsModalOpen(false);
+		const url = `${process.env.NEXT_PUBLIC_API_URL}/wallets/`; // Укажите правильный URL
+
+		try {
+			const response = await customFetch({
+				url,
+				expectedStatusCode: 201,
+				options: {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${token}`,
+					},
+					body: data,
+				},
+			});
+
+			if (response instanceof Error) {
+				console.error("response is error");
+
+				throw response as Error;
+			} else {
+				setIsModalOpen(false);
+			}
+		} catch (error) {
+			console.error("Ошибка при отправке данных:", error);
+		}
 	};
 
 	return (
@@ -37,7 +106,11 @@ const NewWalletModal = ({
 						Отменить
 					</button>
 					<h2 className="new-wallet-header__h2">Счет</h2>
-					<button type="submit" className="new-wallet-header__button">
+					<button
+						onClick={handleSubmit}
+						type="submit"
+						className="new-wallet-header__button"
+					>
 						Готово
 					</button>
 				</div>
@@ -46,26 +119,27 @@ const NewWalletModal = ({
 					<input
 						className="input-block__input"
 						type="text"
+						name="walletName" // Связь с состоянием
 						placeholder="Название"
+						value={data.walletName}
+						onChange={handleChange} // Обработчик изменения
 						required
 					/>
 					<input
 						className="input-block__input"
 						type="text"
+						name="description" // Добавьте это поле в ваш интерфейс, если нужно
 						placeholder="Описание"
 						required
 					/>
 					<select
 						className="input-block__select"
-						name="paymentType"
-						defaultValue="card"
+						name="walletType"
+						value={data.walletType}
+						onChange={handleChange} // Обработчик изменения
 					>
-						<option className="BilModalContent__modal_option" value="card">
-							Карта
-						</option>
-						<option className="BilModalContent__modal_option" value="money">
-							Наличка
-						</option>
+						<option value="card">Карта</option>
+						<option value="cash">Наличка</option>
 					</select>
 				</div>
 
@@ -75,7 +149,14 @@ const NewWalletModal = ({
 						<span className="balance-area__input-left-span">
 							Начальный баланс
 						</span>
-						<input className="balance-area__input-itself" />
+						<input
+							className="balance-area__input-itself"
+							type="number"
+							name="balance" // Связь с состоянием
+							value={data.balance}
+							onChange={handleChange} // Обработчик изменения
+							required
+						/>
 					</div>
 				</div>
 			</form>
