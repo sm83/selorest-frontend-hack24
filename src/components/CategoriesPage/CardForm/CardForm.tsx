@@ -1,30 +1,42 @@
-import Image from "next/image";
+// import Image from "next/image";
 import React from "react";
 
 import "./CardForm.scss";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CardForm = ({
-  title,
-  image,
-  className,
-  mony,
-  onClick
+  selectedCard,
+  onClick,
 }: {
-  title: string;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  image: any;
   className: string;
-  mony: number;
+  selectedCard: {
+    id: string;
+    categoryName: string;
+    categoryPriority: string;
+    balance: number;
+    deleted: boolean;
+    currency: number;
+    userId: string;
+    createdAt: string;
+    updatedAt: string;
+  } | null;
   onClick: () => void; // Колбекк для клика по карточке
 }) => {
-  return (
-    <div className={`CardForm ${className}`} onClick={onClick}>
-      <h3>{title}</h3>
-      <Image src={image} alt={title} height={48} width={48} />
-      <span>{mony}₽</span>
-    </div>
-  );
+  if (selectedCard) {
+    return (
+      <div className={`CardForm`} onClick={onClick}>
+        <h3>{selectedCard.categoryName}</h3>
+        {/* <Image
+          src={image}
+          alt={selectedCard?.categoryName}
+          height={48}
+          width={48}
+        /> */}
+        <span>{selectedCard?.balance}₽</span>
+      </div>
+    );
+  }
+  return null;
 };
 
 export default CardForm;

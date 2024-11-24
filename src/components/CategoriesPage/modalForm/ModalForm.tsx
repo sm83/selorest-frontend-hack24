@@ -15,10 +15,15 @@ import complete from "./assets/Complete.svg";
 interface ModalFormProps {
   onClose: () => void;
   selectedCard: {
-    title: string;
-    image: string;
-    el: number;
-    mony: number;
+    id: string;
+    categoryName: string;
+    categoryPriority: string;
+    balance: number;
+    deleted: boolean;
+    currency: number;
+    userId: string;
+    createdAt: string;
+    updatedAt: string;
   } | null;
 }
 
@@ -78,7 +83,7 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
           <div className="cart" style={{ backgroundColor: "#EDD100" }}>
             <div>
               <span>На категорию</span>
-              <h1>{selectedCard?.title || "Категория"}</h1>
+              <h1>{selectedCard?.categoryName || "Категория"}</h1>
             </div>
             <Image src={people} alt="Family" />
           </div>
