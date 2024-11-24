@@ -13,7 +13,6 @@
     .CategoryModalContent {
         position: relative;
         width: 100%;
-        height: 70%; // Высота модального окна
         background: #1c1c1e;
         border-radius: 20px 20px 0 0;
         padding: 20px;
@@ -55,9 +54,9 @@
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                width: 67px;
-                height: 67px;
-                background-color: #ED8C8C;
+                width: 80px;
+                height: 80px;
+                // background-color: #ED8C8C;
                 border-radius: 999px;
             }
 
@@ -113,7 +112,7 @@
         top: 0;
         left: 0;
         width: 100%;
-        height: 30%; // Замыливание 30% контента
+        height: 60%; // Замыливание 60% контента
         background: rgba(0, 0, 0, 0.5);
         backdrop-filter: blur(5px);
     }

@@ -1,44 +1,101 @@
 import Image from "next/image";
 import "./CategoryModal.scss";
 
-import podarok from "./assets/Podarok.svg";
 import React, { ChangeEvent, useEffect, useState } from "react";
-import RegularButton from "@/commonComponents/RegularButton/RegularButton";
+import { icons } from "@/constants/icon/icon.constant";
+import customFetch from "@/utils/customFetch";
 
 interface ModalFormProps {
   onClose: () => void;
-  selectedCard: {
-    title: string;
-    image: string;
-    el: number;
-    mony: number;
-  } | null;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const CategoryModal: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
-  const [isVisible, setIsVisible] = useState(false);
+interface FormData {
+  userId: string | null;
+  categoryName: string;
+  currency: number;
+  balance: number;
+  icon: number;
+  categoryPriority: string;
+}
 
-  // Состояние для данных из input
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    type: "",
+const CategoryModal: React.FC<ModalFormProps> = ({ onClose }) => {
+  const [isVisible, setIsVisible] = useState(false);
+  const [token, setToken] = useState<string | null>(null);
+  const [formData, setFormData] = useState<FormData>({
+    userId: null,
+    categoryName: "",
+    currency: 1,
+    balance: 0,
+    icon: 0,
+    categoryPriority: "",
   });
 
-  // Функция для изменения данных
+  // Установка userId при загрузке компонента
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const storedUserId = localStorage.getItem("userId");
+      setFormData((prev) => ({
+        ...prev,
+        userId: storedUserId,
+      }));
+      setToken(localStorage.getItem("token"));
+    }
+    setIsVisible(true);
+
+    return () => setIsVisible(false);
+  }, []);
+
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === "icon" ? Number(value) : value,
     }));
   };
 
-  useEffect(() => {
-    setIsVisible(true);
-    return () => setIsVisible(false);
-  }, []);
+  const handleSubmit = async () => {
+    console.log(token);
+
+    if (formData.userId) {
+      const {
+        userId,
+        categoryName,
+        categoryPriority,
+        currency,
+        balance,
+        icon,
+      } = formData;
+      const url = `${process.env.NEXT_PUBLIC_API_URL}/categories`;
+      const body: Omit<FormData, "userId"> & { userId: string } = {
+        userId,
+        categoryName,
+        currency,
+        balance,
+        icon,
+        categoryPriority,
+      };
+
+      try {
+        await customFetch({
+          url,
+          expectedStatusCode: 200,
+          options: {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify(body),
+          },
+        });
+        onClose();
+      } catch (error) {
+        console.error("Ошибка при сохранении категории:", error);
+      }
+    } else {
+      console.error("Пользователь не авторизован!");
+    }
+  };
 
   return (
     <div className="CategoryModal">
@@ -47,52 +104,45 @@ const CategoryModal: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
         <div className="CategoryModalHeader">
           <button onClick={onClose}>Отменить</button>
           <span>Категория</span>
-          <button>Готово</button>
+          <button onClick={handleSubmit}>Готово</button>
         </div>
         <div className="CategoryModalBody">
           <div className="img">
-            <Image src={podarok} alt="podarok" height={48} width={48} />
+            {icons[formData.icon] ? (
+              <Image
+                src={icons[formData.icon].svg}
+                alt={`Иконка категории: ${formData.categoryName}`}
+                height={70}
+                width={70}
+              />
+            ) : (
+              <span>Нет иконки</span>
+            )}
           </div>
-          <span>Изменить</span>
+          <button>Изменить</button>
           <div className="InputWrapper">
             <input
-              name="name"
+              name="categoryName"
               type="text"
               placeholder="Название"
-              value={formData.name}
+              value={formData.categoryName}
               onChange={handleInputChange}
             />
             <input
-              name="description"
+              name="categoryPriority"
               type="text"
-              placeholder="Описание"
-              value={formData.description}
+              placeholder="Приоритет"
+              value={formData.categoryPriority}
               onChange={handleInputChange}
             />
             <input
-              name="type"
-              type="text"
-              placeholder="Тип"
-              value={formData.type}
+              name="icon"
+              type="number"
+              placeholder="Иконка"
+              value={formData.icon}
               onChange={handleInputChange}
             />
           </div>
-          <div className="Podcategorii">
-            <h1>Подкатегории</h1>
-            <RegularButton>Добавить подкатегорию</RegularButton>
-            <RegularButton>Архивная подкатегория</RegularButton>
-          </div>
-        </div>
-        <div className="CategoryModalFooter">
-          <RegularButton className="color">
-            Переместить в категорию
-          </RegularButton>
-          <RegularButton className="color">
-            Объединить с категорией
-          </RegularButton>
-          <RegularButton className="color remove">
-            Удалить категорию
-          </RegularButton>
         </div>
       </div>
     </div>

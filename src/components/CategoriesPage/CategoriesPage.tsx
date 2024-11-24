@@ -20,7 +20,7 @@ import ModalForm from "./modalForm/ModalForm";
 import { useAppDispatch, useAppSelector, useAuth } from "@/hooks";
 import { fetchCategoriesByUserId } from "@/store/slices/categoriesSlice";
 import { useRouter } from "next/navigation";
-// import CategoryModal from "./categoryModal/CategoryModal";
+import CategoryModal from "./categoryModal/CategoryModal";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -68,11 +68,12 @@ const CategoriesPage = () => {
 
   const [walletParam, setWalletParam] = useState<"dohod" | "rashod">("rashod");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenCreate, setIsModalOpenCreate] = useState(false);
   const [selectedCard, setSelectedCard] = useState<ExpenseDataItem | null>(
     null
   );
 
-  useEffect(() => {
+  const updateDate = () => {
     if (userId && token) {
       dispatch(
         fetchCategoriesByUserId({
@@ -85,6 +86,11 @@ const CategoriesPage = () => {
         })
       );
     }
+  };
+
+  useEffect(() => {
+    updateDate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, router, setIsAuth, userId, token, isModalOpen]);
 
   const isExpense = walletParam === "rashod";
@@ -102,6 +108,17 @@ const CategoriesPage = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedCard(null);
+
+    updateDate();
+  };
+
+  const openModalCreate = () => {
+    setIsModalOpenCreate(true);
+  };
+
+  const closeModalCreate = () => {
+    setIsModalOpenCreate(false);
+    updateDate();
   };
 
   const createChartData = (colors: string[]) => {
@@ -197,7 +214,7 @@ const CategoriesPage = () => {
 
             <div
               className="UserCategoryItem addButton"
-              onClick={() => setIsModalOpen(true)}
+              onClick={openModalCreate}
             >
               <Image
                 src={plus}
@@ -234,7 +251,9 @@ const CategoriesPage = () => {
 
         {isModalOpen && (
           <ModalForm onClose={closeModal} selectedCard={selectedCard || null} />
-          // <CategoryModal onClose={closeModal} selectedCard={selectedCard || null} />
+        )}
+        {isModalOpenCreate && (
+          <CategoryModal onClose={() => closeModalCreate()} />
         )}
       </div>
     );
