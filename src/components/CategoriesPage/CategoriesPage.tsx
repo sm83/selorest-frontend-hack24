@@ -5,16 +5,6 @@ import "./CategoriesPage.scss";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 
-// import dosug from "./assets/Dosug.svg";
-// import kafe from "./assets/Kafe.svg";
-// import podarki from "./assets/Podarki.svg";
-// import pokupki from "./assets/Pokupki.svg";
-// import semia from "./assets/Semia.svg";
-// import transport from "./assets/Transport.svg";
-// import zdorovie from "./assets/Zdorovie.svg";
-// import produkt from "./assets/Produkt.svg";
-// import dohodIcon from "./assets/DohodIcon.svg";
-
 import dohod from "./assets/Dohod.svg";
 import rashod from "./assets/Rashod.svg";
 
@@ -41,6 +31,7 @@ interface ExpenseDataItem {
   balance: number;
   deleted: boolean;
   currency: number;
+  icon: number | null;
   userId: string;
   createdAt: string;
   updatedAt: string;
@@ -54,6 +45,7 @@ const incomeData: ExpenseDataItem[] = [
     balance: 1000,
     deleted: false,
     currency: 0,
+    icon: 0,
     userId:
       typeof window !== "undefined"
         ? localStorage.getItem("user-id") || ""
@@ -191,12 +183,16 @@ const CategoriesPage = () => {
                   className="UserCategoryItem"
                   key={category.id}
                   onClick={() => openModal(category)}
-                  selectedCard={category}
+                  selectedCard={{
+                    ...category,
+                    icon: category.icon ?? 0, // Устанавливаем значение по умолчанию
+                  }}
                 />
               ))}
+
             <div
               className="UserCategoryItem addButton"
-              onClick={() => setIsModalOpen(true)} // Обработчик обновлен
+              onClick={() => setIsModalOpen(true)}
             >
               <Image
                 src={plus}

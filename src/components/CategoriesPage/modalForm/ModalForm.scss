@@ -1,134 +1,154 @@
 .item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #131313;
-    padding: 0;
-    border-radius: 20px;
-    width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #131313;
+  padding: 0;
+  border-radius: 20px;
+  width: 100%;
 }
 
 .item0 {
-    grid-area: item0;
+  grid-area: item0;
 }
 
 .item1 {
-    grid-area: item1;
+  grid-area: item1;
 }
 
 .item2 {
-    grid-area: item2;
+  grid-area: item2;
 }
 
 .item3 {
-    grid-area: item3;
+  grid-area: item3;
 }
 
 .item4 {
-    grid-area: item4;
+  grid-area: item4;
 }
 
 .item5 {
-    grid-area: item5;
+  grid-area: item5;
 }
 
 .item6 {
-    grid-area: item6;
+  grid-area: item6;
 }
 
 .item7 {
-    grid-area: item7;
+  grid-area: item7;
 }
 
 .item8 {
-    grid-area: item8;
+  grid-area: item8;
 }
 
 .item9 {
-    grid-area: item9;
+  grid-area: item9;
 }
 
 .item10 {
-    grid-area: item10;
-    display: flex;
-    width: 100%;
-    gap: 3px;
+  grid-area: item10;
+  display: flex;
+  width: 100%;
+  gap: 3px;
 }
 
 .item11 {
-    grid-area: item11;
-    width: 100%;
+  grid-area: item11;
+  width: 100%;
 }
 
 .item12 {
-    grid-area: item12;
+  grid-area: item12;
 }
 
 .item13 {
-    grid-area: item13;
+  grid-area: item13;
 }
 
 .ModalForm {
-    position: fixed;
-    bottom: 0;
-    left: 0;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+
+  // Анимация появления
+  .modalContent {
+    position: relative;
     width: 100%;
-    height: 100%;
-    z-index: 1000;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-    align-items: center;
-  
-    // Анимация появления
-    .modalContent {
-      position: relative;
+    height: 70%; // Высота модального окна
+    background: #1c1c1e;
+    border-radius: 20px 20px 0 0;
+    padding: 20px;
+    overflow-y: auto;
+    z-index: 10;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 12px;
+    padding: 20px;
+    grid-template-areas:
+      "item10  item10  item10"
+      "item11  item11   item11"
+      "item1  item2   item3"
+      "item4  item5   item6"
+      "item7  item8  item9"
+      "item12  item0  item13";
+
+    // Начальное состояние (скрыто внизу)
+    transform: translateY(100%);
+    transition: transform 0.3s ease-out;
+
+    &.visible {
+      transform: translateY(0); // Поднимается на место
+    }
+
+    .cart {
+      display: flex;
+      border-radius: 20px;
+      justify-content: space-around;
+      align-items: center;
       width: 100%;
-      height: 70%; // Высота модального окна
-      background: #1c1c1e;
-      border-radius: 20px 20px 0 0;
-      padding: 20px;
-      overflow-y: auto;
-      z-index: 10;
-
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      grid-template-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
-      gap: 12px;
-      padding: 20px;
-      grid-template-areas:
-          "item10  item10  item10"
-          "item11  item11   item11"
-          "item1  item2   item3"
-          "item4  item5   item6"
-          "item7  item8  item9"
-          "item12  item0  item13";
-
-  
-      // Начальное состояние (скрыто внизу)
-      transform: translateY(100%);
-      transition: transform 0.3s ease-out;
-  
-      &.visible {
-        transform: translateY(0); // Поднимается на место
-      }
-
-      .cart {
+      color: #131313;
+      .card__text {
         display: flex;
-        border-radius: 20px;
-        justify-content: space-around;
-        align-items: center;
+        flex-direction: column;
+      }
+      .card__span {
+        color: var(--color-black);
+        font-size: 14px;
+        line-height: 17.23px;
+        font-weight: 400;
+      }
+      .card__select {
         width: 100%;
-        color: #131313;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        border: none;
+        outline: none;
+        color: var(--color-black);
+        font-size: 20px;
+        line-height: 24.62px;
+        font-weight: 400;
+        background: var(--color-grey);
+        background-color: transparent !important;
 
-        div {
-            span, h1 {
-                color: #131313;
-            }
-        }
+      }
+      .card__option {
+        color: var(--color-black);
       }
     }
-  
+
     .overlay {
       position: absolute;
       top: 0;
@@ -139,5 +159,4 @@
       backdrop-filter: blur(5px);
     }
   }
-  
-  
+}

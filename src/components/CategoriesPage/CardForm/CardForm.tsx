@@ -1,12 +1,14 @@
-// import Image from "next/image";
+import Image from "next/image";
 import React from "react";
 
 import "./CardForm.scss";
+import { icons } from "@/constants/icon/icon.constant";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const CardForm = ({
   selectedCard,
   onClick,
+  className,
 }: {
   className: string;
   selectedCard: {
@@ -16,6 +18,7 @@ const CardForm = ({
     balance: number;
     deleted: boolean;
     currency: number;
+    icon: number;
     userId: string;
     createdAt: string;
     updatedAt: string;
@@ -24,14 +27,14 @@ const CardForm = ({
 }) => {
   if (selectedCard) {
     return (
-      <div className={`CardForm`} onClick={onClick}>
+      <div className={`CardForm ${className}`} onClick={onClick}>
         <h3>{selectedCard.categoryName}</h3>
-        {/* <Image
-          src={image}
+        <Image
+          src={icons.find((i) => i.id === selectedCard.icon)?.svg}
           alt={selectedCard?.categoryName}
           height={48}
           width={48}
-        /> */}
+        />
         <span>{selectedCard?.balance}₽</span>
       </div>
     );
