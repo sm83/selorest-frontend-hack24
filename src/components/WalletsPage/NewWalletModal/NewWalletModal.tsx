@@ -41,7 +41,8 @@ const NewWalletModal = ({
 
 		setUserId(user_id);
 		setToken(token);
-	}, [data, userId]);
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	}, []);
 
 	// Обработчик изменения полей
 	const handleChange = (
