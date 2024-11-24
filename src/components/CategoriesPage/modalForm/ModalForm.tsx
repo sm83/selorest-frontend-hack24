@@ -16,7 +16,7 @@ import cart from "./assets/card-outline.svg";
 
 import clear from "./assets/Clear.svg";
 import complete from "./assets/Complete.svg";
-import { useAppDispatch, useAppSelector } from "@/hooks";
+  import { useAppDispatch, useAppSelector } from "@/hooks";
 
 interface ModalFormProps {
   onClose: () => void;
@@ -72,6 +72,8 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
 
   const dispatch = useAppDispatch();
   const wallet = useAppSelector((state: RootState) => state.wallet.walletData);
+  console.log(wallet);
+
   const categories = useSelector(
     (state: RootState) => state.categories.categoriesData
   );
@@ -82,6 +84,7 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
     categoryPriority: selectedCard?.categoryPriority || "",
     balance: selectedCard?.balance || 0,
   });
+  
 
   // Обновляем formData при изменении selectedCard
   useEffect(() => {

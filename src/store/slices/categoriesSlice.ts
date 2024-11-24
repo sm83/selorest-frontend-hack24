@@ -76,8 +76,12 @@ export const fetchCategoriesByUserId = createAsyncThunk(
       });
 
       if (response instanceof Error) {
+        console.log("error");
+
         throw response;
       } else {
+        console.log(response.data);
+
         return response.data;
       }
 
