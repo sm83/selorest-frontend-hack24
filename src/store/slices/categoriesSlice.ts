@@ -56,8 +56,6 @@ export const fetchCategoriesByUserId = createAsyncThunk(
         url: `${API_URL}/categories/user-id/${id}`,
       });
 
-      console.log("here1");
-
       if (requestUrl instanceof Error) {
         throw requestUrl;
       }

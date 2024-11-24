@@ -185,7 +185,6 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
         balance: amount,
       }));
       handleSubmit();
-      console.log("Ввод завершен:", inputValue);
       setInputValue("0");
       onClose();
     }
