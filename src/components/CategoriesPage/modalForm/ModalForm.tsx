@@ -72,6 +72,7 @@ const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
 
   const dispatch = useAppDispatch();
   const wallet = useAppSelector((state: RootState) => state.wallet.walletData);
+
   const categories = useSelector(
     (state: RootState) => state.categories.categoriesData
   );
