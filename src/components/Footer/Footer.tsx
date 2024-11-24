@@ -39,13 +39,13 @@ const Footer = () => {
         />
       </FooterBtn>
       <FooterBtn
-        href={"/app/history"}
+        href={"/app/transactions"}
         text={"Операции"}
         activeLink={activeLink}
         setActiveLink={setActiveLink}
       >
         <NewspaperOutline
-          color={activeLink === "/app/history" ? "#2d9cdb" : "#DEDEDE"}
+          color={activeLink === "/app/transactions" ? "#2d9cdb" : "#DEDEDE"}
         />
       </FooterBtn>
       <FooterBtn

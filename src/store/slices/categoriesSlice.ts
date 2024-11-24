@@ -10,6 +10,7 @@ interface CategoriesData {
   balance: number;
   deleted: boolean;
   currency: number;
+  icon: number;
   userId: string;
   createdAt: string;
   updatedAt: string;
