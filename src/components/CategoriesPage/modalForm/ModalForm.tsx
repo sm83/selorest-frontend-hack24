@@ -1,6 +1,12 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchWalletByUserId } from "@/store/slices/walletSlice";
+import { fetchCategoriesByUserId } from "@/store/slices/categoriesSlice";
+import customFetch from "@/utils/customFetch";
+
+import { RootState } from "@/store/store";
 import "./ModalForm.scss";
 
 import Image from "next/image";
@@ -47,48 +53,138 @@ const buttonData: ButtonDataItem[] = [
   { value: "complete", el: 13 },
 ];
 
+interface PostBody {
+  amount: number;
+  type: string;
+  currencyId: number;
+  categoryId: number;
+  walletId: string;
+}
+
 const ModalForm: React.FC<ModalFormProps> = ({ onClose, selectedCard }) => {
   const [isVisible, setIsVisible] = useState(false);
-  const [inputValue, setInputValue] = useState<string>("0"); // Начальное значение — "0"
+  const [inputValue, setInputValue] = useState<string>("0");
+
+  const dispatch = useDispatch();
+  const wallet = useSelector((state: RootState) => state.wallet.walletData);
+  // console. ("wallet", wallet);
+  const categories = useSelector(
+    (state: RootState) => state.categories.categoriesData
+  );
+  // console.log("categories", categories);
 
   useEffect(() => {
     setIsVisible(true);
+
+    const userId = localStorage.getItem("user-id");
+    const token = localStorage.getItem("token");
+
+    if (userId && token) {
+      dispatch(
+        fetchWalletByUserId({
+          id: userId,
+          token,
+          authSensitiveSwitcher: () => {},
+          unauthorizedAction: () => {},
+        })
+      );
+      dispatch(
+        fetchCategoriesByUserId({
+          id: userId,
+          token,
+          authSensitiveSwitcher: () => {},
+          unauthorizedAction: () => {},
+        })
+      );
+    }
+
     return () => setIsVisible(false);
-  }, []);
+  }, [dispatch]);
 
   const handleButtonClick = (value: number | string) => {
     if (typeof value === "number") {
-      // Если текущее значение "0", заменяем его на вводимое число
       setInputValue((prev) => (prev === "0" ? `${value}` : `${prev}${value}`));
     } else if (value === "clear") {
-      // Удаление последнего символа
       setInputValue((prev) => (prev.length > 1 ? prev.slice(0, -1) : "0"));
     } else if (value === "complete") {
       console.log("Ввод завершен:", inputValue);
-      setInputValue("0"); // Сбрасываем поле ввода
+      setInputValue("0");
       onClose();
     }
   };
 
+  const handleSubmit = async (e: React.FormEvent) => {
+    const {
+      amount,
+      type = "add",
+      currencyId,
+      categoryId,
+      walletId,
+    } = formValues;
+    const url = `${process.env.NEXT_PUBLIC_API_URL}/transaction/`;
+    const body: PostBody = {
+      amount,
+      type: "add",
+      currencyId,
+      categoryId,
+      walletId,
+    };
+
+    try {
+      const result = await customFetch({
+        url,
+        expectedStatusCode: 200,
+        options: {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: body,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="ModalForm">
       <div className="overlay" onClick={onClose}></div>
       <div className={`modalContent ${isVisible ? "visible" : ""}`}>
         <div className="item10">
-          <div className="cart" style={{ backgroundColor: "#DEDEDE" }}>
-            <div>
-              <span>Со счета</span>
-              <h1>Карта</h1>
+          <label
+            htmlFor="select"
+            className="cart"
+            style={{ backgroundColor: "#DEDEDE" }}
+          >
+            <div className="card__text">
+              <span className="card__span">Со счета</span>
+              <select id="select" className="card__select">
+                {wallet &&
+                  wallet.map((wall) => (
+                    <option key={wall.id} className="card__option">
+                      {wall.walletName}
+                    </option>
+                  ))}
+              </select>
             </div>
             <Image src={cart} alt="Cart" />
-          </div>
-          <div className="cart" style={{ backgroundColor: "#EDD100" }}>
-            <div>
-              <span>На категорию</span>
-              <h1>{selectedCard?.categoryName || "Категория"}</h1>
+          </label>
+          <label
+            htmlFor="select"
+            className="cart"
+            style={{ backgroundColor: "var(--color-family )" }}
+          >
+            <div className="card__text">
+              <span className="card__span">Со счета</span>
+              <select id="select" className="card__select">
+                {categories &&
+                  categories.map((cat) => (
+                    <option key={cat.id} className="card__option">
+                      {cat.categoryName}
+                    </option>
+                  ))}
+              </select>
             </div>
-            <Image src={people} alt="Family" />
-          </div>
+            <Image src={cart} alt="Cart" />
+          </label>
         </div>
         <div className="item11 item">{inputValue}</div>
         {buttonData.map((button) => (
