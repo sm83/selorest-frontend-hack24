@@ -30,7 +30,6 @@ const NewWalletModal = ({
     balance: 0,
   });
 
-  const [userId, setUserId] = useState<string | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {

@@ -6,11 +6,10 @@ import WalletBox from "@/components/WalletsPage/WalletBox/WalletBox";
 import Card from "@/svgComponents/Card/Card";
 import Money from "@/svgComponents/Money/Money";
 import Plus from "@/svgComponents/Plus/Plus";
-import { use, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import NewWalletModal from "@/components/WalletsPage/NewWalletModal/NewWalletModal";
 import { useAppDispatch, useAppSelector, useAuth } from "@/hooks";
 import { RootState } from "@/store/store";
-import { useSelector } from "react-redux";
 import { fetchWalletByUserId } from "@/store/slices/walletSlice";
 import { useRouter } from "next/navigation";
 import { formatNumber } from "chart.js/helpers";
@@ -67,12 +66,6 @@ const WalletsPage = () => {
               {/* <Card />  */}
             </WalletBox>
           ))}
-          {/* <WalletBox name="Карта" moneyAmount={1488}>
-            <Card />
-          </WalletBox>
-          <WalletBox name="Наличные" moneyAmount={1488}>
-            <Money />
-          </WalletBox> */}
           <NewWalletBox setIsModalOpen={setIsModalOpen}>
             <Plus />
           </NewWalletBox>
@@ -87,44 +80,3 @@ const WalletsPage = () => {
 };
 
 export default WalletsPage;
-
-{
-  /* <div className="wallets-page">
-<div className="wallets__list">
-	<WalletBox id="0" name="Карта" moneyAmount={1488}>
-		<Card />
-	</WalletBox>
-	<WalletBox id="1" name="Наличные" moneyAmount={1488}>
-		<Money />
-	</WalletBox> */
-}
-{
-  /* {bils.map((bil) => (
-		<div className="bils__item" key={bil.id}>
-			<div className="bils__item_icon">
-				<Image
-					src={bil.icon}
-					className="bils__item_svg"
-					alt={bil.name}
-				/>
-			</div>
-			<div className="bils__item_data">
-				<div className="bils__item_name">{bil.name}</div>
-				<div className="bils__item_money">{bil.money} ₽</div>
-			</div>
-		</div>
-	))} */
-}
-{
-  /* </div> */
-}
-{
-  /* <button onClick={openModal} className="bils__btn_add">
-	<Image src={plus} className="bils__btn_svg" alt="Добавить" />
-</button>
-
-{isModalOpen && <BilModal onClose={closeModal} />} */
-}
-{
-  /* </div> */
-}
