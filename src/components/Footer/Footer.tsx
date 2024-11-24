@@ -12,8 +12,6 @@ import { useEffect, useState } from "react";
 const Footer = () => {
 	const [activeLink, setActiveLink] = useState<string>("");
 
-	console.log("activeLink: ", activeLink);
-
 	useEffect(() => {
 		setActiveLink(window.location.pathname);
 	}, []);
