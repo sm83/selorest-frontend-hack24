@@ -54,7 +54,10 @@ const incomeData: ExpenseDataItem[] = [
     balance: 1000,
     deleted: false,
     currency: 0,
-    userId: localStorage.getItem("user-id") || "",
+    userId:
+      typeof window !== "undefined"
+        ? localStorage.getItem("user-id") || ""
+        : "",
     createdAt: "",
     updatedAt: "",
   },
@@ -62,8 +65,10 @@ const incomeData: ExpenseDataItem[] = [
 
 const CategoriesPage = () => {
   const dispatch = useAppDispatch();
-  const userId = localStorage.getItem("user-id");
-  const token = localStorage.getItem("token");
+  const userId =
+    typeof window !== "undefined" ? localStorage.getItem("user-id") : null;
+  const token =
+    typeof window !== "undefined" ? localStorage.getItem("token") : null;
   const { setIsAuth } = useAuth();
   const router = useRouter();
 
