@@ -16,15 +16,10 @@ interface ITransaction {
   operations: IOperation[];
 }
 
-interface TransactionsProps {
-  transactions: ITransaction[];
-}
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const Transactions = ({ transactions }: TransactionsProps) => {
+const Transactions = () => {
   const [filter, setFilter] = useState("");
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [transactionsData, setTransactionsData] = useState<ITransaction[]>([
-    //на бэке сортировать по дате
     {
       day: "2024-11-24",
       operations: [
@@ -71,7 +66,6 @@ const Transactions = ({ transactions }: TransactionsProps) => {
       return "Вчера";
     }
 
-    // Форматируем как "день месяц"
     const options: Intl.DateTimeFormatOptions = {
       day: "2-digit",
       month: "long",
@@ -83,8 +77,7 @@ const Transactions = ({ transactions }: TransactionsProps) => {
     return num.toLocaleString("en-US");
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setFilter(event.target.value);
   };
 
@@ -92,20 +85,16 @@ const Transactions = ({ transactions }: TransactionsProps) => {
     setFilter("");
   };
 
-  const handleFilterChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setFilter(event.target.value);
-  };
-
   const filteredTransactions = transactionsData
     .map((transaction) => ({
       ...transaction,
       operations: transaction.operations.filter((operation) => {
-        if (filter === "income") return operation.profit; // Только доходы
-        if (filter === "expenses") return !operation.profit; // Только расходы
-        return true; // Все операции, если фильтр пуст
+        if (filter === "income") return operation.profit;
+        if (filter === "expenses") return !operation.profit;
+        return true;
       }),
     }))
-    .filter((transaction) => transaction.operations.length > 0); // Убираем дни без операций
+    .filter((transaction) => transaction.operations.length > 0);
 
   return (
     <div className="transactions">
@@ -116,9 +105,6 @@ const Transactions = ({ transactions }: TransactionsProps) => {
           id="filter"
           className="transactions__select"
           value={filter}
-          onClick={() => {
-            console.log(filter);
-          }}
           onChange={handleFilterChange}
           onBlur={handleBlur}
         >

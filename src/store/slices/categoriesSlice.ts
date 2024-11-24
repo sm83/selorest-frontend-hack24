@@ -7,6 +7,12 @@ interface CategoriesData {
   balance: number;
   categoryName: string;
   categoryPriority: string;
+
+  balance: number;
+  deleted: boolean;
+  currency: number;
+  icon: number;
+  userId: string;
   createdAt: string;
   currency: number;
   deleted: boolean;
