@@ -13,6 +13,7 @@ import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 import { fetchWalletByUserId } from "@/store/slices/walletSlice";
 import { useRouter } from "next/navigation";
+import { formatNumber } from "chart.js/helpers";
 
 const WalletsPage = () => {
   const dispatch = useAppDispatch();
@@ -41,18 +42,26 @@ const WalletsPage = () => {
     );
   }, []);
 
+  const totalBalance = wallet?.reduce(
+    (acc, walletItem) => acc + walletItem.balance,
+    0
+  );
+
   return (
     <div className="wrapper-page-wrapper">
       <div className="wallets-page">
         <div className="wallets-page__summary">
           <span className="wallets-page__summary-span">Счета</span>
-          <span className="wallets-page__summary-span">2493826</span>
+          <span className="wallets-page__summary-span">
+            {(totalBalance && `${formatNumber(totalBalance)}₽`) || "0₽"}
+          </span>
         </div>
         <div className="wallets-page__list">
           {wallet?.map((walletItem) => (
             <WalletBox
+              key={walletItem.id}
               name={walletItem.walletName}
-              moneyAmount={walletItem.balance}
+              moneyAmount={formatNumber(walletItem.balance)}
             >
               {walletItem.walletType === "cash" ? <Money /> : <Card />}
               {/* <Card />  */}
