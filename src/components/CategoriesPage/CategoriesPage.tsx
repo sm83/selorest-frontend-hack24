@@ -104,17 +104,21 @@ const CategoriesPage = () => {
     setSelectedCard(null);
   };
 
-  const createChartData = (colors: string[]) => ({
-    datasets: [
-      {
-        label: isExpense ? "Расходы по категориям" : "Доходы по категориям",
-        data: categories ? categories[0].balance + categories[1].balance : 0,
-        backgroundColor: colors,
-        cutout: "85%",
-        borderWidth: 0,
-      },
-    ],
-  });
+  const createChartData = (colors: string[]) => {
+    const dataValues = currentData?.map((item) => item.balance || 0);
+
+    return {
+      datasets: [
+        {
+          label: isExpense ? "Расходы по категориям" : "Доходы по категориям",
+          data: dataValues,
+          backgroundColor: colors,
+          cutout: "85%",
+          borderWidth: 0,
+        },
+      ],
+    };
+  };
 
   const centerTextPlugin = {
     id: "centerText",
